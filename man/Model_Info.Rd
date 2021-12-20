@@ -1,5 +1,5 @@
-\name{ModelInfo}
-\alias{ModelInfo}
+\name{Model_Info}
+\alias{Model_Info}
 
 \title{Details about the Models}
 

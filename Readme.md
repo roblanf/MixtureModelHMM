@@ -21,4 +21,3 @@ Mix Model - Starts from model 1 and moves to next model if the current B-W model
 devtools::install_github("rahilvora9/PredMixtrees") 
 library("PredMixtrees")
 ```
-

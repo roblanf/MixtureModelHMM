@@ -21,6 +21,6 @@ Predict Tree Mixed function
 }
 \examples{
 pred=predict_tree_mixed("../AliSim/taxa4/taxa4.data1.fa.sitelh","post.prob.tree.")
-v.pred<- pred[[1]];p.pred<-pred[[2]]
+v.pred<- pred[[1]];p.pred<-pred[[2]];conv<-pred[[3]]
 
 }

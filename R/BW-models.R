@@ -5,14 +5,14 @@
 #' @param variable post.prob.tree. or log.like.tree. Default= log.like.tree
 #' @param iter maximum iterations. Default=10000
 #'
-#' @return viterbi path and posterior path as a list
+#' @return viterbi path, posterior path and convergence truth as a list
 #' @importFrom aphid train Viterbi posterior
 #' @importFrom testit has_warning
 #' @export
 #'
 #' @examples
 #' pred=predict_tree("../AliSim/taxa4/taxa4.data1.fa.sitelh",4,"post.prob.tree.")
-#' v.pred<- pred[[1]];p.pred<-pred[[2]]
+#' v.pred<- pred[[1]];p.pred<-pred[[2]];conv<-pred[[3]]
 #'
 predict_tree <- function(file,model,variable,iter){
   if(missing(model)) {
@@ -77,11 +77,13 @@ predict_tree <- function(file,model,variable,iter){
 
   ### Build the HMM object
   hmm <- structure(list(A = A, E = E), class = "HMM")
+  conv<-TRUE
 
   # Baum-Welch
   warn=has_warning(bw <- train(hmm,seq,method = "BaumWelch",maxiter=iter,logspace = FALSE,cores="autodetect",quiet=TRUE))
   if (warn==TRUE){
-    print("Not converged")
+    #print("Not converged")
+    conv<-FALSE
     #bw <- train(hmm,seq,method = "Viterbi",logspace = FALSE,quiet=TRUE)
   }
 
@@ -92,6 +94,6 @@ predict_tree <- function(file,model,variable,iter){
   #get posterior highest state
   post.prob = posterior(bw,seq)
   post.path=tail(states,numTrees)[apply(post.prob, 2, which.max)]
-  return(list(viterbi.path,post.path))
+  return(list(viterbi.path,post.path,conv,data[variables],data))
 }
 

@@ -11,7 +11,7 @@
 #'
 #' @examples
 #' pred=predict_tree_mixed("../AliSim/taxa4/taxa4.data1.fa.sitelh","post.prob.tree.")
-#' v.pred<- pred[[1]];p.pred<-pred[[2]]
+#' v.pred<- pred[[1]];p.pred<-pred[[2]];conv<-pred[[3]]
 #'
 predict_tree_mixed <- function(file,variable,iter){
   if(missing(variable)) {
@@ -45,6 +45,7 @@ predict_tree_mixed <- function(file,variable,iter){
   dimnames(E) <- list(states = states[-1], residues = residues)
   ### Build the HMM object
   hmm <- structure(list(A = A, E = E), class = "HMM")
+  conv<-TRUE
 
   # Baum-Welch
   warn=has_warning(bw <- train(hmm,seq,method = "BaumWelch",logspace = FALSE,cores="autodetect",quiet=TRUE))
@@ -56,8 +57,8 @@ predict_tree_mixed <- function(file,variable,iter){
     diag(E) <- .5
     dimnames(E) <- list(states = states[-1], residues = residues)
     hmm <- structure(list(A = A, E = E), class = "HMM")
-    print(hmm$A)
-    print(hmm$E)
+    #print(hmm$A)
+    #print(hmm$E)
     warn=has_warning(bw <- train(hmm,seq,method = "BaumWelch",logspace = FALSE,cores="autodetect",quiet=TRUE))
   }
   if (warn==TRUE){
@@ -69,8 +70,8 @@ predict_tree_mixed <- function(file,variable,iter){
     diag(E) <- .5
     dimnames(E) <- list(states = states[-1], residues = residues)
     hmm <- structure(list(A = A, E = E), class = "HMM")
-    print(hmm$A)
-    print(hmm$E)
+    #print(hmm$A)
+    #print(hmm$E)
     warn=has_warning(bw <- train(hmm,seq,method = "BaumWelch",logspace = FALSE,cores="autodetect",quiet=TRUE))
   }
   if (warn==TRUE){
@@ -83,12 +84,11 @@ predict_tree_mixed <- function(file,variable,iter){
     diag(E) <- .5
     dimnames(E) <- list(states = states[-1], residues = residues)
     hmm <- structure(list(A = A, E = E), class = "HMM")
-    print(hmm$A)
-    print(hmm$E)
     warn=has_warning(bw <- train(hmm,seq,method = "BaumWelch",maxiter=iter,logspace = FALSE,cores="autodetect",quiet=TRUE))
   }
   if (warn==TRUE){
-    print("Not converged, switching to Viterbi")
+    #print("Not converged")
+    conv<-FALSE
     #bw <- train(hmm,seq,method = "Viterbi",logspace = FALSE,quiet=TRUE)
   }
 
@@ -99,5 +99,5 @@ predict_tree_mixed <- function(file,variable,iter){
   #get posterior highest state
   post.prob = posterior(bw,seq)
   post.path=tail(states,numTrees)[apply(post.prob, 2, which.max)]
-  return(list(viterbi.path,post.path))
+  return(list(viterbi.path,post.path,conv))
 }

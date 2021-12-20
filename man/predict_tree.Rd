@@ -16,13 +16,13 @@ predict_tree(file, model, variable, iter)
 \item{iter}{maximum iterations. Default=10000}
 }
 \value{
-viterbi path and posterior path as a list
+viterbi path, posterior path and convergence truth as a list
 }
 \description{
 Predict Tree function
 }
 \examples{
 pred=predict_tree("../AliSim/taxa4/taxa4.data1.fa.sitelh",4,"post.prob.tree.")
-v.pred<- pred[[1]];p.pred<-pred[[2]]
+v.pred<- pred[[1]];p.pred<-pred[[2]];conv<-pred[[3]]
 
 }
