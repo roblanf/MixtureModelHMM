@@ -4,9 +4,9 @@
 * [Install and Usage](#Installation)
 
 ## General info
-This project implements Baum-Welch algorithm to predict trees from output file of Mixtures of trees(MAST) model.\
-The input file for B-W algorithm is .sitelh output file from iqtree.\
-Project is created using R, depends on R packages "aphid" and "testit".\
+This project implements Baum-Welch algorithm to predict trees from output file of Mixtures models such as MAST model.\
+The input file for B-W algorithm is .sitelh output file from IQ-TREE2.\
+Project is created using R, depends on R packages "aphid","tidyverse","reshape2" and "testit".\
 The output is vector indicating the tree for a given site.
 
 ## Models
