@@ -16,5 +16,5 @@ input, viterbi and posterior decoding predicted path plot
 Pediction Plots
 }
 \examples{
-plot_mixtures(pred)
+plot_mixtrees(pred)
 }

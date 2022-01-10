@@ -11,12 +11,12 @@
 #' @export
 #'
 #' @examples
-#' plot_mixtures(pred)
+#' plot_mixtrees(pred)
 plot_mixtrees<-function(pred){
 
   v.pred<- as.numeric(gsub("T","",pred[[1]]));p.pred<-as.numeric(gsub("T","",pred[[2]]));seq<-apply(pred[[4]], 1, which.max)
   d<-t(data.frame(v.pred,p.pred,seq))
-  row.names(d) <- c("v.pred","p.pred","seq")
+  row.names(d) <- c("v.pred","p.pred","input.seq")
   d <- data.frame(names = row.names(d), d)
   df2<-d %>%
     melt(id.vars = "names") %>%
@@ -30,19 +30,19 @@ plot_mixtrees<-function(pred){
 
 #' Inital Plots
 #'
-#' @param pred predict_tree/predict_tree_mixed returned object
+#' @param file relative path of the input sitelh file
 #' @param variable post.prob.tree. or log.like.tree. Default= post.prob.tree.
 #'
 #' @return scatter plot for initial post.prob.tree./log.like.tree.
 #' @export
 #'
 #' @examples
-#' plot_scatter(pred,"post.prob.tree.")
-plot_scatter<-function(pred,variable){
+#' plot_scatter("../AliSim/taxa4/taxa4.data1.fa.sitelh","post.prob.tree.")
+plot_scatter<-function(file,variable){
   if(missing(variable)) {
     variable="post.prob.tree."
   }
-  df=pred[[5]]
+  df=read.table(file, header=TRUE, sep = ",")
   numTrees=(ncol(df)-5)/2
   variables=paste(variable,as.character(1:numTrees),sep='')
   dl = df %>% pivot_longer(cols=variables,names_to = "type", values_to = "measure")

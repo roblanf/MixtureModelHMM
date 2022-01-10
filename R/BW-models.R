@@ -94,6 +94,6 @@ predict_tree <- function(file,model,variable,iter){
   #get posterior highest state
   post.prob = posterior(bw,seq)
   post.path=tail(states,numTrees)[apply(post.prob, 2, which.max)]
-  return(list(viterbi.path,post.path,conv,data[variables],data))
+  return(list(viterbi.path,post.path,conv,data[variables]))
 }
 

@@ -99,5 +99,5 @@ predict_tree_mixed <- function(file,variable,iter){
   #get posterior highest state
   post.prob = posterior(bw,seq)
   post.path=tail(states,numTrees)[apply(post.prob, 2, which.max)]
-  return(list(viterbi.path,post.path,conv))
+  return(list(viterbi.path,post.path,conv,data[variables]))
 }

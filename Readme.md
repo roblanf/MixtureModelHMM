@@ -7,7 +7,8 @@
 This project implements Baum-Welch algorithm to predict trees from output file of Mixtures models such as MAST model.\
 The input file for B-W algorithm is .sitelh output file from IQ-TREE2.\
 Project is created using R, depends on R packages "aphid","tidyverse","reshape2" and "testit".\
-The output is vector indicating the tree for a given site.
+The output is vector indicating the tree for a given site.\
+Plot functionality initial scatter plots and prediction plots.
 
 ## Models
 Model 1 - The tree with highest probability at a given site is considered, and converted into a sequence for training of B-W algorithm.\
@@ -20,4 +21,5 @@ Mix Model - Starts from model 1 and moves to next model if the current B-W model
 ```
 devtools::install_github("rahilvora9/PredMixtrees") 
 library("PredMixtrees")
+help(package="PredMixtrees")
 ```
