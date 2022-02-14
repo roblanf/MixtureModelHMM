@@ -4,11 +4,19 @@
 * [Install and Usage](#Installation)
 
 ## General info
+<<<<<<< HEAD
 This project implements Baum-Welch algorithm to predict trees/class from output file of Mixtures models such as MAST, GHOST or Q-matrix model.\
 The input file for B-W algorithm is .sitelh/.siteprob along with .alninfo output files from iqtree.\
 Project is created using R, depends on R packages "aphid", "tidyverse", "reshape2" and "testit".\
 The output is vector indicating the tree/class for a given site.\
 Supports initial scatter plots and prediction plots.
+=======
+This project implements Baum-Welch algorithm to predict trees/class from output file of Mixtures models such as MAST,GHOST or Q-matrix model.\
+The input file for B-W algorithm is .sitelh/.siteprob along with .alninfo output files from iqtree.\
+Project is created using R, depends on R packages "aphid","tidyverse","reshape2" and "testit".\
+The output is vector indicating the tree/class for a given site.\
+Supports initial scatter plots and prediction plots.\
+>>>>>>> 856d401a381f6674fa4451d99e838f0788b7c3ec
 
 ## Models
 Model 1 - The tree with highest probability at a given site is considered, and converted into a sequence for training of B-W algorithm.\
