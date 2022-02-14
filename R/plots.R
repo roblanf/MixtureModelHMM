@@ -1,4 +1,4 @@
-#' Pediction Plots
+#' Prediction Plots
 #'
 #' @param pred predict_tree/predict_tree_mixed returned object
 #'
@@ -6,7 +6,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom tidyr pivot_longer
-#' @importFrom ggplot2 ggplot aes  coord_flip geom_col scale_fill_continuous geom_point geom_smooth
+#' @importFrom ggplot2 ggplot aes  coord_flip geom_col geom_point geom_smooth guides guide_legend
 #' @importFrom reshape2 melt
 #' @export
 #'
@@ -20,31 +20,57 @@ plot_mixtrees<-function(pred){
   d <- data.frame(names = row.names(d), d)
   df2<-d %>%
     melt(id.vars = "names") %>%
-    mutate(variable = 1)
+    mutate(Site = 1)
 
   df2 %>%
-    ggplot(aes(x = names, y = variable, group = names, fill = value)) +
-    scale_fill_continuous(breaks = unique(seq))+
-    geom_col() + coord_flip()
+    ggplot(aes(x = names, y = Site, group = names, fill = as.factor(value))) +
+    geom_col() + coord_flip() + guides(fill=guide_legend(title='Class'))
+
 }
 
 #' Inital Plots
 #'
-#' @param file relative path of the input sitelh file
-#' @param variable post.prob.tree. or log.like.tree. Default= post.prob.tree.
+#' @param file relative path of the input sitelh/siteprob file
 #'
 #' @return scatter plot for initial post.prob.tree./log.like.tree.
+#' @importFrom ggplot2 ggplot aes geom_point geom_smooth
 #' @export
 #'
 #' @examples
-#' plot_scatter("../AliSim/taxa4/taxa4.data1.fa.sitelh","post.prob.tree.")
-plot_scatter<-function(file,variable){
-  if(missing(variable)) {
-    variable="post.prob.tree."
+#' plot_scatter("data100.2t.10k.fa.sitelh")
+#'
+plot_scatter<-function(sitein){
+
+  data=read.table(sitein,header=FALSE,fill=TRUE)
+
+  if(data[1,2]=="LnL"){
+    numTrees=(ncol(data)-2)
+    colnames(data)<-c("Site","LnL",paste("LnLW_",1:numTrees,sep=''))
+    data=data[-1,]
+    rownames(data)<-NULL
+  } else if(data[1,2]=="p1"){
+    numTrees=(ncol(data)-1)
+    colnames(data) <- data[1,]
+    data=data[-1,]
+  } else{
+    print("Invalid site info file")
   }
-  df=read.table(file, header=TRUE, sep = ",")
-  numTrees=(ncol(df)-5)/2
-  variables=paste(variable,as.character(1:numTrees),sep='')
-  dl = df %>% pivot_longer(cols=variables,names_to = "type", values_to = "measure")
-  ggplot(dl, aes(x=site, y = measure, colour=type)) + geom_point(size=0.5,alpha=0.1)+geom_smooth(method='loess', span=0.03)
+  data[] <- lapply(data, function(x) as.numeric(as.character(x)))
+  vars=colnames(data[,(ncol(data)-numTrees+1):ncol(data)])
+  dl = data %>% pivot_longer(cols=all_of(vars),names_to = "type", values_to = "measure")
+  ggplot(dl, aes(x=Site, y = measure, colour=type)) + geom_point(size=0.5,alpha=0.1)+geom_smooth(method='loess', span=0.03)
+}
+
+#' Transition Plots
+#'
+#' @param pred predict_tree/predict_tree_mixed returned object
+#'
+#' @return Transition diagram from final probabilities
+#' @export
+#'
+#' @examples
+#' plot_transitions(pred)
+#'
+plot_transitions<-function(pred){
+  plot(pred[[5]])
 }
