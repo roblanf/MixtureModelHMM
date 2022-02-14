@@ -4,12 +4,10 @@
 \alias{plot_scatter}
 \title{Inital Plots}
 \usage{
-plot_scatter(file, variable)
+plot_scatter(sitein)
 }
 \arguments{
-\item{file}{relative path of the input sitelh file}
-
-\item{variable}{post.prob.tree. or log.like.tree. Default= post.prob.tree.}
+\item{file}{relative path of the input sitelh/siteprob file}
 }
 \value{
 scatter plot for initial post.prob.tree./log.like.tree.
@@ -18,5 +16,6 @@ scatter plot for initial post.prob.tree./log.like.tree.
 Inital Plots
 }
 \examples{
-plot_scatter("../AliSim/taxa4/taxa4.data1.fa.sitelh","post.prob.tree.")
+plot_scatter("data100.2t.10k.fa.sitelh")
+
 }

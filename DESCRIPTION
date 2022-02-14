@@ -1,10 +1,10 @@
 Package: PredMixtrees
 Type: Package
 Title: Predicts trees for given sites
-Version: 0.1.3
+Version: 0.2.0
 Author: Rahil Vora
 Maintainer: Rahil Vora <rahil.vora@anu.edu.au>
-Description: The sitelh file of IQ-TREE2 MAST model is used as input to predict the tree for the sites.
+Description: The sitelh/siteprob along with .alninfo output files of IQ-TREE mixture models is used as input to predict the tree for the sites.
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
