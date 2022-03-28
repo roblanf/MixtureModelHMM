@@ -11,9 +11,9 @@
 #' @export
 #'
 #' @examples
-#' pred=predict_class("data100.2t.10k.fa.siteprob","data100.2t.10k.fa.siteprob",3)
+#' pred=predict_class("./iqtree/sample.siteprob","./iqtree/sample.alninfo",3)
 #' v.pred<- pred[[1]];p.pred<-pred[[2]];conv<-pred[[3]]
-#'
+
 predict_class <- function(sitein,alninfo,model,iter){
   if(missing(model)) {
     model=4
@@ -38,37 +38,37 @@ predict_class <- function(sitein,alninfo,model,iter){
     print("Invalid site info file")
   }
 
-  states <- c("Begin",paste("T",1:numTrees,sep=''))
+  states <- c("Begin",paste("C",1:numTrees,sep=''))
 
-  seq=paste("I",1:numTrees,sep='')[apply(data[,(ncol(data)-numTrees+1):ncol(data)], 1, which.max)]
+  seq=paste("E",1:numTrees,sep='')[apply(data[,(ncol(data)-numTrees+1):ncol(data)], 1, which.max)]
 
 
   # Initial HMM
-  #'   ### Define the transition probability matrix
+  ### Define the transition probability matrix
   A <- matrix(c(rep(.01/(numTrees-1),(numTrees+1)**2)),nrow=numTrees+1,ncol=numTrees+1,byrow = TRUE)
   diag(A) <- .99
   A[1,]<-1/numTrees
   A[,1]<-0
   dimnames(A) <- list(from = states, to = states)
 
-  #'   ### Define the emission probability matrix
+  ### Define the emission probability matrix
   if (model==1){
-    residues <- paste("I",1:(numTrees),sep='')
+    residues <- paste("E",1:(numTrees),sep='')
     E=matrix(c(rep(.5/(numTrees-1),numTrees)),nrow=numTrees,ncol=numTrees,byrow = TRUE)
   } else if(model==2){
-    residues <- paste("I",1:(numTrees+1),sep='')
-    seq[tab$Stat=='C']=paste("I",numTrees+1,sep='')
+    residues <- paste("E",1:(numTrees+1),sep='')
+    seq[tab$Stat=='C']=paste("E",numTrees+1,sep='')
     E=matrix(c(rep(.5/(numTrees),numTrees)),nrow=numTrees,ncol=numTrees+1,byrow = TRUE)
   } else if(model==3){
-    residues <- paste("I",1:(numTrees+2),sep='')
-    seq[tab$Stat=='U']=paste("I",numTrees+2,sep='')
-    seq[tab$Stat=='C']=paste("I",numTrees+1,sep='')
+    residues <- paste("E",1:(numTrees+2),sep='')
+    seq[tab$Stat=='U']=paste("E",numTrees+2,sep='')
+    seq[tab$Stat=='C']=paste("E",numTrees+1,sep='')
     E=matrix(c(rep(.5/(numTrees+1),numTrees)),nrow=numTrees,ncol=numTrees+2,byrow = TRUE)
   } else if(model==4){
-    residues <- paste("I",1:(numTrees+3),sep='')
-    seq[tab$Stat=='S']=paste("I",numTrees+3,sep='')
-    seq[tab$Stat=='U']=paste("I",numTrees+2,sep='')
-    seq[tab$Stat=='C']=paste("I",numTrees+1,sep='')
+    residues <- paste("E",1:(numTrees+3),sep='')
+    seq[tab$Stat=='S']=paste("E",numTrees+3,sep='')
+    seq[tab$Stat=='U']=paste("E",numTrees+2,sep='')
+    seq[tab$Stat=='C']=paste("E",numTrees+1,sep='')
     E=matrix(c(rep(.5/(numTrees+2),numTrees)),nrow=numTrees,ncol=numTrees+3,byrow = TRUE)
   } else{
     print("Invalid model selected")
@@ -77,7 +77,7 @@ predict_class <- function(sitein,alninfo,model,iter){
   dimnames(E) <- list(states = states[-1], residues = residues)
   print(table(seq))
 
-  #'   ### Build the HMM object
+  ### Build the HMM object
   hmm <- structure(list(A = A, E = E), class = "HMM")
   conv<-TRUE
 
@@ -114,9 +114,11 @@ predict_class <- function(sitein,alninfo,model,iter){
 #' pred=predict_class("data100.2t.10k.fa.siteprob","data100.2t.10k.fa.siteprob",3)
 #' v.pred<- pred[[1]];p.pred<-pred[[2]];conv<-pred[[3]]
 #'
-#'
-predict_class_mixed <- function(sitein,alninfo,iter){
+predict_class_mixed <- function(sitein,alninfo,switch,iter){
 
+  if(missing(switch)) {
+    switch=1000
+  }
   if(missing(iter)) {
     iter=10000
   }
@@ -137,11 +139,11 @@ predict_class_mixed <- function(sitein,alninfo,iter){
     print("Invalid site info file")
   }
 
-  states <- c("Begin",paste("T",1:numTrees,sep=''))
+  states <- c("Begin",paste("C",1:numTrees,sep=''))
 
-  seq=paste("I",1:numTrees,sep='')[apply(data[,(ncol(data)-numTrees+1):ncol(data)], 1, which.max)]
+  seq=paste("E",1:numTrees,sep='')[apply(data[,(ncol(data)-numTrees+1):ncol(data)], 1, which.max)]
 
-  residues <- paste("I",1:(numTrees),sep='')
+  residues <- paste("E",1:(numTrees),sep='')
 
 
   # Initial HMM
@@ -160,38 +162,38 @@ predict_class_mixed <- function(sitein,alninfo,iter){
   conv<-TRUE
 
   # Baum-Welch
-  warn=has_warning(bw <- train(hmm,seq,method = "BaumWelch",logspace = FALSE,cores="autodetect",quiet=TRUE))
+  warn=has_warning(bw <- train(hmm,seq,method = "BaumWelch",maxiter=switch,logspace = FALSE,cores="autodetect",quiet=TRUE))
   if (warn==TRUE){
     print("model2")
-    residues <- paste("I",1:(numTrees+1),sep='')
-    seq[tab$Stat=='C']=paste("I",numTrees+1,sep='')
+    residues <- paste("E",1:(numTrees+1),sep='')
+    seq[tab$Stat=='C']=paste("E",numTrees+1,sep='')
     E=matrix(c(rep(.5/(numTrees),numTrees)),nrow=numTrees,ncol=numTrees+1,byrow = TRUE)
     diag(E) <- .5
     dimnames(E) <- list(states = states[-1], residues = residues)
     hmm <- structure(list(A = A, E = E), class = "HMM")
     #print(hmm$A)
     #print(hmm$E)
-    warn=has_warning(bw <- train(hmm,seq,method = "BaumWelch",logspace = FALSE,cores="autodetect",quiet=TRUE))
+    warn=has_warning(bw <- train(hmm,seq,method = "BaumWelch",maxiter=switch,logspace = FALSE,cores="autodetect",quiet=TRUE))
   }
   if (warn==TRUE){
     print("model3")
-    residues <- paste("I",1:(numTrees+2),sep='')
-    seq[tab$Stat=='U']=paste("I",numTrees+2,sep='')
-    seq[tab$Stat=='C']=paste("I",numTrees+1,sep='')
+    residues <- paste("E",1:(numTrees+2),sep='')
+    seq[tab$Stat=='U']=paste("E",numTrees+2,sep='')
+    seq[tab$Stat=='C']=paste("E",numTrees+1,sep='')
     E=matrix(c(rep(.5/(numTrees+1),numTrees)),nrow=numTrees,ncol=numTrees+2,byrow = TRUE)
     diag(E) <- .5
     dimnames(E) <- list(states = states[-1], residues = residues)
     hmm <- structure(list(A = A, E = E), class = "HMM")
     #print(hmm$A)
     #print(hmm$E)
-    warn=has_warning(bw <- train(hmm,seq,method = "BaumWelch",logspace = FALSE,cores="autodetect",quiet=TRUE))
+    warn=has_warning(bw <- train(hmm,seq,method = "BaumWelch",maxiter=switch,logspace = FALSE,cores="autodetect",quiet=TRUE))
   }
   if (warn==TRUE){
     print("model4")
-    residues <- paste("I",1:(numTrees+3),sep='')
-    seq[tab$Stat=='S']=paste("I",numTrees+3,sep='')
-    seq[tab$Stat=='U']=paste("I",numTrees+2,sep='')
-    seq[tab$Stat=='C']=paste("I",numTrees+1,sep='')
+    residues <- paste("E",1:(numTrees+3),sep='')
+    seq[tab$Stat=='S']=paste("E",numTrees+3,sep='')
+    seq[tab$Stat=='U']=paste("E",numTrees+2,sep='')
+    seq[tab$Stat=='C']=paste("E",numTrees+1,sep='')
     E=matrix(c(rep(.5/(numTrees+2),numTrees)),nrow=numTrees,ncol=numTrees+3,byrow = TRUE)
     diag(E) <- .5
     dimnames(E) <- list(states = states[-1], residues = residues)

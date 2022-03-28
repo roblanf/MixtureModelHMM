@@ -1,6 +1,6 @@
 #' Prediction Plots
 #'
-#' @param pred predict_tree/predict_tree_mixed returned object
+#' @param pred predict_class/predict_class_mixed returned object
 #'
 #' @return input, viterbi and posterior decoding predicted path plot
 #' @importFrom magrittr %>%
@@ -11,8 +11,8 @@
 #' @export
 #'
 #' @examples
-#' plot_mixtrees(pred)
-plot_mixtrees<-function(pred){
+#' plot_predictions(pred)
+plot_predictions<-function(pred){
 
   v.pred<- as.numeric(gsub("T","",pred[[1]]));p.pred<-as.numeric(gsub("T","",pred[[2]]));seq<-apply(pred[[4]], 1, which.max)
   d<-t(data.frame(v.pred,p.pred,seq))
@@ -32,7 +32,7 @@ plot_mixtrees<-function(pred){
 #'
 #' @param file relative path of the input sitelh/siteprob file
 #'
-#' @return scatter plot for initial post.prob.tree./log.like.tree.
+#' @return scatter plot for initial log-likelihood/posterior probabilities
 #' @importFrom ggplot2 ggplot aes geom_point geom_smooth
 #' @export
 #'
@@ -63,7 +63,7 @@ plot_scatter<-function(sitein){
 
 #' Transition Plots
 #'
-#' @param pred predict_tree/predict_tree_mixed returned object
+#' @param pred predict_class/predict_class_mixed returned object
 #'
 #' @return Transition diagram from final probabilities
 #' @export

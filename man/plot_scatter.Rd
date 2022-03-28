@@ -10,7 +10,7 @@ plot_scatter(sitein)
 \item{file}{relative path of the input sitelh/siteprob file}
 }
 \value{
-scatter plot for initial post.prob.tree./log.like.tree.
+scatter plot for initial log-likelihood/posterior probabilities
 }
 \description{
 Inital Plots

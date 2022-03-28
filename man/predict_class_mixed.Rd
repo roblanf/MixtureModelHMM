@@ -4,7 +4,7 @@
 \alias{predict_class_mixed}
 \title{Predict Class Mixed function}
 \usage{
-predict_class_mixed(sitein, alninfo, iter)
+predict_class_mixed(sitein, alninfo, switch, iter)
 }
 \arguments{
 \item{sitein}{relative path of the input .sitelh/.siteprob file}
@@ -22,6 +22,5 @@ Predict Class Mixed function
 \examples{
 pred=predict_class("data100.2t.10k.fa.siteprob","data100.2t.10k.fa.siteprob",3)
 v.pred<- pred[[1]];p.pred<-pred[[2]];conv<-pred[[3]]
-
 
 }

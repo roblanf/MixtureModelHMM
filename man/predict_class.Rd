@@ -22,10 +22,6 @@ viterbi path, posterior path and convergence truth as a list
 Predict Class function
 }
 \examples{
-pred=predict_class("data100.2t.10k.fa.siteprob","data100.2t.10k.fa.siteprob",3)
+pred=predict_class("./iqtree/sample.siteprob","./iqtree/sample.alninfo",3)
 v.pred<- pred[[1]];p.pred<-pred[[2]];conv<-pred[[3]]
-
-  ### Define the transition probability matrix
-  ### Define the emission probability matrix
-  ### Build the HMM object
 }

@@ -14,7 +14,7 @@ save_file(pred, algo, file_name)
 \item{file_name}{name of file to be saved}
 }
 \value{
-saves prediction results
+saves prediction output in .gz file
 }
 \description{
 Saves the predicted output to gz file
