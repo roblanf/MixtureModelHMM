@@ -7,7 +7,7 @@
 save_file(pred, algo, file_name)
 }
 \arguments{
-\item{pred}{predict_tree/predict_tree_mixed returned object}
+\item{pred}{predict_tree/predict_tree_mixed returned list}
 
 \item{algo}{"viterbi" or "posterior"}
 
@@ -20,7 +20,7 @@ saves prediction output in .gz file
 Saves the predicted output to gz file
 }
 \examples{
-save_file(pred,"viterbi","output")
-save_file(pred,"posterior","output")
-v.pred<-system("gzcat viterbi.gz",intern=TRUE)
+save_file(pred,"viterbi","output_v")
+save_file(pred,"posterior","output_p")
+v.pred<-system("gzcat output_v.gz",intern=TRUE)
 }

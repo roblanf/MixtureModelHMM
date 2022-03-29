@@ -7,7 +7,7 @@
 plot_transitions(pred)
 }
 \arguments{
-\item{pred}{predict_class/predict_class_mixed returned object}
+\item{pred}{predict_class/predict_class_mixed returned list}
 }
 \value{
 Transition diagram from final probabilities

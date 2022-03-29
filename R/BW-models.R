@@ -53,18 +53,25 @@ predict_class <- function(sitein,alninfo,model,iter){
 
   ### Define the emission probability matrix
   if (model==1){
+    print("Model 1 - same number of class and emissions")
     residues <- paste("E",1:(numTrees),sep='')
     E=matrix(c(rep(.5/(numTrees-1),numTrees)),nrow=numTrees,ncol=numTrees,byrow = TRUE)
   } else if(model==2){
+    print("Model 2 - 1 additional emission for constant site")
+    print("The probability of addtional emission is equal for all classes")
     residues <- paste("E",1:(numTrees+1),sep='')
     seq[tab$Stat=='C']=paste("E",numTrees+1,sep='')
     E=matrix(c(rep(.5/(numTrees),numTrees)),nrow=numTrees,ncol=numTrees+1,byrow = TRUE)
   } else if(model==3){
+    print("Model 3 - 2 additional emission for constant site and non-informative sites")
+    print("The probability of each addtional emission is equal for all classes")
     residues <- paste("E",1:(numTrees+2),sep='')
     seq[tab$Stat=='U']=paste("E",numTrees+2,sep='')
     seq[tab$Stat=='C']=paste("E",numTrees+1,sep='')
     E=matrix(c(rep(.5/(numTrees+1),numTrees)),nrow=numTrees,ncol=numTrees+2,byrow = TRUE)
   } else if(model==4){
+    print("Model 4 - 3 additional emission for constant site, non-informative sites and same parsimony")
+    print("The probability of each addtional emission is equal for all classes")
     residues <- paste("E",1:(numTrees+3),sep='')
     seq[tab$Stat=='S']=paste("E",numTrees+3,sep='')
     seq[tab$Stat=='U']=paste("E",numTrees+2,sep='')
@@ -75,6 +82,7 @@ predict_class <- function(sitein,alninfo,model,iter){
   }
   diag(E) <- .5
   dimnames(E) <- list(states = states[-1], residues = residues)
+  Print("Sites emitted from each class")
   print(table(seq))
 
   ### Build the HMM object

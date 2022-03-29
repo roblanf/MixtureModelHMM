@@ -1,6 +1,6 @@
 #' Saves the predicted output to gz file
 #'
-#' @param pred predict_tree/predict_tree_mixed returned object
+#' @param pred predict_tree/predict_tree_mixed returned list
 #' @param file_name name of file to be saved
 #' @param algo "viterbi" or "posterior"
 #'
@@ -8,9 +8,9 @@
 #' @export
 #'
 #' @examples
-#' save_file(pred,"viterbi","output")
-#' save_file(pred,"posterior","output")
-#' v.pred<-system("gzcat viterbi.gz",intern=TRUE)
+#' save_file(pred,"viterbi","output_v")
+#' save_file(pred,"posterior","output_p")
+#' v.pred<-system("gzcat output_v.gz",intern=TRUE)
 save_file<-function(pred,algo,file_name){
 
   if(missing(algo)) {
@@ -36,7 +36,7 @@ save_file<-function(pred,algo,file_name){
 
 #' Generates report
 #'
-#' @param pred predict_tree/predict_tree_mixed returned object
+#' @param pred predict_tree/predict_tree_mixed returned list
 #' @param file_name name of file to be saved
 #'
 #' @return saves prediction report in .txt
@@ -46,7 +46,7 @@ save_file<-function(pred,algo,file_name){
 #' save_report(pred,"report")
 save_report<-function(pred,filename){
   tained_model<-pred[[5]]
-  sink(paste(filename,'.txt'))
+  sink(paste(filename,'.txt',sep = ""))
   cat("=============================\n")
   cat("Probability of transition of one class to another\n")
   cat("Each class is represented by C\n")

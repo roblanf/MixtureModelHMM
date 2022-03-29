@@ -16,6 +16,6 @@ scatter plot for initial log-likelihood/posterior probabilities
 Inital Plots
 }
 \examples{
-plot_scatter("data100.2t.10k.fa.sitelh")
-
+plot_scatter("sample_data.sitelh")
+plot_scatter("sample_data.siteprob")
 }

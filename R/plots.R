@@ -1,6 +1,6 @@
 #' Prediction Plots
 #'
-#' @param pred predict_class/predict_class_mixed returned object
+#' @param pred predict_class/predict_class_mixed returned list
 #'
 #' @return input, viterbi and posterior decoding predicted path plot
 #' @importFrom magrittr %>%
@@ -14,7 +14,7 @@
 #' plot_predictions(pred)
 plot_predictions<-function(pred){
 
-  v.pred<- as.numeric(gsub("T","",pred[[1]]));p.pred<-as.numeric(gsub("T","",pred[[2]]));seq<-apply(pred[[4]], 1, which.max)
+  v.pred<- as.numeric(gsub("C","",pred[[1]]));p.pred<-as.numeric(gsub("C","",pred[[2]]));seq<-apply(pred[[4]], 1, which.max)
   d<-t(data.frame(v.pred,p.pred,seq))
   row.names(d) <- c("v.pred","p.pred","input.seq")
   d <- data.frame(names = row.names(d), d)
@@ -37,8 +37,8 @@ plot_predictions<-function(pred){
 #' @export
 #'
 #' @examples
-#' plot_scatter("data100.2t.10k.fa.sitelh")
-#'
+#' plot_scatter("sample_data.sitelh")
+#' plot_scatter("sample_data.siteprob")
 plot_scatter<-function(sitein){
 
   data=read.table(sitein,header=FALSE,fill=TRUE)
@@ -63,7 +63,7 @@ plot_scatter<-function(sitein){
 
 #' Transition Plots
 #'
-#' @param pred predict_class/predict_class_mixed returned object
+#' @param pred predict_class/predict_class_mixed returned list
 #'
 #' @return Transition diagram from final probabilities
 #' @export

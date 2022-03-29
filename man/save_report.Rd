@@ -7,7 +7,7 @@
 save_report(pred, filename)
 }
 \arguments{
-\item{pred}{predict_tree/predict_tree_mixed returned object}
+\item{pred}{predict_tree/predict_tree_mixed returned list}
 
 \item{file_name}{name of file to be saved}
 }
