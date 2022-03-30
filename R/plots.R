@@ -44,19 +44,19 @@ plot_scatter<-function(sitein){
   data=read.table(sitein,header=FALSE,fill=TRUE)
 
   if(data[1,2]=="LnL"){
-    numTrees=(ncol(data)-2)
-    colnames(data)<-c("Site","LnL",paste("LnLW_",1:numTrees,sep=''))
+    numClasses=(ncol(data)-2)
+    colnames(data)<-c("Site","LnL",paste("LnLW_",1:numClasses,sep=''))
     data=data[-1,]
     rownames(data)<-NULL
   } else if(data[1,2]=="p1"){
-    numTrees=(ncol(data)-1)
+    numClasses=(ncol(data)-1)
     colnames(data) <- data[1,]
     data=data[-1,]
   } else{
     print("Invalid site info file")
   }
   data[] <- lapply(data, function(x) as.numeric(as.character(x)))
-  vars=colnames(data[,(ncol(data)-numTrees+1):ncol(data)])
+  vars=colnames(data[,(ncol(data)-numClasses+1):ncol(data)])
   dl = data %>% pivot_longer(cols=all_of(vars),names_to = "type", values_to = "measure")
   ggplot(dl, aes(x=Site, y = measure, colour=type)) + geom_point(size=0.5,alpha=0.1)+geom_smooth(method='loess', span=0.03)
 }
