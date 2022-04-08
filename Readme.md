@@ -26,9 +26,10 @@ help(package="PredMixtrees")
 ```
 
 ## Tutorial
-For interactive tutorial https://colab.research.google.com/drive/1Kn7nigiNPh25tPqn4mC6e-aDYy4njN60?usp=sharing
+For interactive tutorial:\
+https://colab.research.google.com/drive/1Kn7nigiNPh25tPqn4mC6e-aDYy4njN60?usp=sharing
 
-Using [IQ-TREE](https://github.com/iqtree/iqtree2) to generate output files from NEXUS partition input file. The output files are stored in IQTREE_Outfiles folder under the name 'sample_file'. According to the type of file 'sample_files' is given appropriate extension.\
+Using [IQ-TREE](https://github.com/iqtree/iqtree2) to generate output files from alignment file(NEXUS/fasta..). The output files are stored in IQTREE_Outfiles folder under the name 'sample_file'. According to the type of file 'sample_files' is given appropriate extension.\
 ```iqtree -s data/sample.nex -m GTR+F+H4 -pre ./IQTREE_Outfiles/sample_data -wspm -wslm -alninfo -redo -nt AUTO```
 
 Creating scatter plots to generate initial log-likelihood/posterior probabilities for each site.\
