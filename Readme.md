@@ -26,6 +26,7 @@ help(package="PredMixtrees")
 ```
 
 ## Tutorial
+For interactive tutorial https://colab.research.google.com/drive/1Kn7nigiNPh25tPqn4mC6e-aDYy4njN60?usp=sharing
 
 Using [IQ-TREE](https://github.com/iqtree/iqtree2) to generate output files from NEXUS partition input file. The output files are stored in IQTREE_Outfiles folder under the name 'sample_file'. According to the type of file 'sample_files' is given appropriate extension.\
 ```iqtree -s data/sample.nex -m GTR+F+H4 -pre ./IQTREE_Outfiles/sample_data -wspm -wslm -alninfo -redo -nt AUTO```
@@ -33,6 +34,8 @@ Using [IQ-TREE](https://github.com/iqtree/iqtree2) to generate output files from
 Creating scatter plots to generate initial log-likelihood/posterior probabilities for each site.\
 Input file could be either a .sitelh or .siteprob depending which parameter you would like to use for boundary prediction of classes.\
 ```plot_scatter("./IQTREE_Outfiles/sample_data.sitelh")```
+![pretty_prob](https://user-images.githubusercontent.com/11074196/162411279-696e1ee1-cfe0-4376-8cf3-374d2949c506.png)
+
 
 To predict class boundaries:\
 Input file is alignment information(.alninfo) and either a .sitelh or .siteprob depending which parameter you would like to use for boundary prediction of classes. The are other optional arguments which can be specified such as [Models](#models) selection and maximum iterations.\
@@ -52,16 +55,18 @@ v.pred<- pred[[1]];p.pred<-pred[[2]];conv<-pred[[3]]
 The default value for maximum iterations for both above functions is 10000, while default iterations the `predict_class_mixed` function would move to next model is 1000 iterations. Default model that `predict_class` would use is model 4.\
 
 The output is a list where the first element is class prediction of sites done by viterbi algorithm, the second element is class prediction of sites is done using posterior decoding algorithm. The v.pred and p.pred variables are vector associating site with a class number(represented by C, eg C1) chronologically.\
-The last element is boolean variable to determine whether the algorithm converged or not.\
+The last element is boolean variable to determine whether the algorithm converged or not.
 
 Plotting predictions:\
 The prediction plots provides sitewise comparison of input and output class association.\
 ```plot_predictions(pred)```
+![plot_out_sim](https://user-images.githubusercontent.com/11074196/162411235-3ba823be-7a19-409b-a3d5-ebd00c2db20f.png)
 
-Saving output and report:\
+
+Saving output and report:
 
 Save output vector of class predictions in gz file.\
-First argument is returned list from prediction function, second is to specify the algorithm such as 'viterbi' or 'posterior' and the final argument is the filename.\
+First argument is returned list from prediction function, second is to specify the algorithm such as 'viterbi' or 'posterior' and the final argument is the filename.
 
 ```
 save_file(pred,"viterbi","output_v")
