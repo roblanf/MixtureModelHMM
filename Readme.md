@@ -32,6 +32,7 @@ https://colab.research.google.com/drive/1Kn7nigiNPh25tPqn4mC6e-aDYy4njN60?usp=sh
 Using [IQ-TREE](https://github.com/iqtree/iqtree2) to generate output files from alignment file(NEXUS/fasta..). The output files are stored in IQTREE_Outfiles folder under the name 'sample_file'. According to the type of file 'sample_files' is given appropriate extension.\
 ```iqtree -s data/sample.nex -m GTR+F+H4 -pre ./IQTREE_Outfiles/sample_data -wspm -wslm -alninfo -redo -nt AUTO```
 
+The following steps should be followed in ```R/RStudio``` after IQ-TREE has finished running:\
 Creating scatter plots to generate initial log-likelihood/posterior probabilities for each site.\
 Input file could be either a .sitelh or .siteprob depending which parameter you would like to use for boundary prediction of classes.\
 ```plot_scatter("./IQTREE_Outfiles/sample_data.sitelh")```
@@ -39,24 +40,24 @@ Input file could be either a .sitelh or .siteprob depending which parameter you 
 
 
 To predict class boundaries:\
-Input file is alignment information(.alninfo) and either a .sitelh or .siteprob depending which parameter you would like to use for boundary prediction of classes. The are other optional arguments which can be specified such as [Models](#models) selection and maximum iterations.\
-
-```
-pred=predict_class("./IQTREE_Outfiles/sample_data.sitelh","./IQTREE_Outfiles/sample_data.alninfo",model=3)
-v.pred<- pred[[1]];p.pred<-pred[[2]];conv<-pred[[3]]
-```
-
-There is other function called predict_class_mixed which starts from model 1 and moves to next model if the current B-W model doesn't converge in user specified iterations.\
-
-```
-pred=predict_class_mixed("./IQTREE_Outfiles/sample_data.sitelh","./IQTREE_Outfiles/sample_data.alninfo", switch=100)
-v.pred<- pred[[1]];p.pred<-pred[[2]];conv<-pred[[3]]
-```
-
-The default value for maximum iterations for both above functions is 10000, while default iterations the `predict_class_mixed` function would move to next model is 1000 iterations. Default model that `predict_class` would use is model 4.\
+Input file is alignment information(.alninfo) and either a .sitelh or .siteprob depending which parameter you would like to use for boundary prediction of classes. The are other optional arguments which can be specified such as [Models](#models) selection and maximum iterations.
 
 The output is a list where the first element is class prediction of sites done by viterbi algorithm, the second element is class prediction of sites is done using posterior decoding algorithm. The v.pred and p.pred variables are vector associating site with a class number(represented by C, eg C1) chronologically.\
 The last element is boolean variable to determine whether the algorithm converged or not.
+
+```
+pred=predict_class("./IQTREE_Outfiles/sample_data.sitelh","./IQTREE_Outfiles/sample_data.alninfo",model=3)
+viterbi_pred<- pred[[1]];posterior_decoding_pred<-pred[[2]];converged<-pred[[3]]
+```
+
+There is other function called predict_class_mixed which starts from model 1 and moves to next model if the current B-W model doesn't converge in user specified iterations.
+
+```
+pred=predict_class_mixed("./IQTREE_Outfiles/sample_data.sitelh","./IQTREE_Outfiles/sample_data.alninfo", switch=100)
+viterbi_pred<- pred[[1]];posterior_decoding_pred<-pred[[2]];converged<-pred[[3]]
+```
+
+The default value for maximum iterations for both above functions is 10000, while default iterations the `predict_class_mixed` function would move to next model is 1000 iterations. Default model that `predict_class` would use is model 4.
 
 Plotting predictions:\
 The prediction plots provides sitewise comparison of input and output class association.\
@@ -71,7 +72,7 @@ First argument is returned list from prediction function, second is to specify t
 
 ```
 save_file(pred,"viterbi","output_v")
-save_file(pred,"posterior","output_p")
+save_file(pred,"posterior_decoding","output_p")
 ```
 
 Load it back to R:
@@ -80,4 +81,4 @@ Load it back to R:
 Report of final transition and emissions probabilities including proportion of predicted sites for each class can be generated using:
 
 ```save_report(pred,"report")```
-First argument is returned list from prediction function and second argument is the filename. The file is saves as .txt file
+First argument is returned list from prediction function and second argument is the filename. The file is saved as .txt file.
