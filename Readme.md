@@ -41,6 +41,12 @@ and write a report on the HMM with a lot more information like this:
 save_file((hmm_result = hmm_result, output_filename = "hmm_report.txt"))
 ```
 
+## Google Colab notebook
+
+If you have your files, and just want the answer without using R, you can use the google colab notebook here:
+
+
+
 ## Worked example
 
 Let's start with an alignment of x species and 10,000 sites. You can download the alignment at [this link]()
