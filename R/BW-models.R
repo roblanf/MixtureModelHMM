@@ -14,11 +14,12 @@
 #' pred=predict_class("./iqtree/sample.siteprob","./iqtree/sample.alninfo",3)
 #' v.pred<- pred[[1]];p.pred<-pred[[2]];conv<-pred[[3]]
 
-run_HMM <- function(sitein,alninfo,model=4,iter=10000){
+run_HMM <- function(site_info,aln_info,model=4,iter=10000){
 
   tab=read.table(alninfo,header=TRUE)
   data=read.table(sitein,header=FALSE,fill=TRUE)
 
+  # add missing names to IQ-TREE output file
   if(data[1,2]=="LnL"){
     numClasses=(ncol(data)-2)
     colnames(data)<-c("site","LnL",paste("LnLW_",1:numClasses,sep=''))
