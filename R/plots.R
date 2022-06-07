@@ -16,7 +16,7 @@ plot_predictions<-function(hmm_result){
 
   classification<- as.numeric(gsub("C","",hmm_result[[1]]));seq<-apply(hmm_result[[2]], 1, which.max)
   d<-t(data.frame(classification,seq))
-  row.names(d) <- c("classification","input.seq")
+  row.names(d) <- c("classification","hmm_input_seq")
   d <- data.frame(names = row.names(d), d)
   df2<-d %>%
     melt(id.vars = "names") %>%
@@ -43,7 +43,7 @@ plot_predictions<-function(hmm_result){
 
 plot_scatter<-function(input_filepath, span=0.03){
 
-  data=read.table(site_info,header=FALSE,fill=TRUE)
+  data=read.table(input_filepath,header=FALSE,fill=TRUE)
 
   if(data[1,2]=="LnL"){
     numClasses=(ncol(data)-2)
@@ -72,7 +72,7 @@ plot_scatter<-function(input_filepath, span=0.03){
 
 #' Transition Plots
 #'
-#' @param hmm_result predict_class/predict_class_mixed returned list
+#' @param hmm_result run_hmm() returned object
 #'
 #' @return Transition diagram from final probabilities
 #' @export

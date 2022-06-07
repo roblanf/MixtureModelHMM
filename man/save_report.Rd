@@ -4,12 +4,12 @@
 \alias{save_report}
 \title{Generates report}
 \usage{
-save_report(pred, filename)
+save_report(hmm_result, output_filename)
 }
 \arguments{
-\item{pred}{predict_tree/predict_tree_mixed returned list}
+\item{hmm_result}{predict_tree/predict_tree_mixed returned list}
 
-\item{file_name}{name of file to be saved}
+\item{output_filename}{name of file to be saved}
 }
 \value{
 saves prediction report in .txt
@@ -18,5 +18,5 @@ saves prediction report in .txt
 Generates report
 }
 \examples{
-save_report(pred,"report")
+save_report(hmm_result,"report")
 }

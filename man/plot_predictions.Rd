@@ -4,10 +4,10 @@
 \alias{plot_predictions}
 \title{Prediction Plots}
 \usage{
-plot_predictions(pred)
+plot_predictions(hmm_result)
 }
 \arguments{
-\item{pred}{predict_class/predict_class_mixed returned list}
+\item{hmm_result}{run_hmm() returned object}
 }
 \value{
 input, viterbi and posterior decoding predicted path plot
@@ -16,5 +16,5 @@ input, viterbi and posterior decoding predicted path plot
 Prediction Plots
 }
 \examples{
-plot_predictions(pred)
+plot_predictions(hmm_result)
 }

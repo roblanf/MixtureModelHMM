@@ -4,13 +4,15 @@
 \alias{plot_scatter}
 \title{Inital Plots}
 \usage{
-plot_scatter(sitein)
+plot_scatter(input_filepath, span = 0.03)
 }
 \arguments{
-\item{file}{relative path of the input sitelh/siteprob file}
+\item{input_filepath}{file path to a .sitelh or a .siteprob file from IQ-TREE}
+
+\item{span}{the span of the kernel density plot (default 0.03)}
 }
 \value{
-scatter plot for initial log-likelihood/posterior probabilities
+ggplot object with a scatter plot and smoothed kernel density
 }
 \description{
 Inital Plots

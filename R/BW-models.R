@@ -102,7 +102,15 @@ run_HMM <- function(site_info,aln_info,model=4,iter=10000,algorithm="viterbi"){
   } else if(algorithm == "posterior"){
     #get posterior highest state
     post.prob = posterior(bw,seq)
-    classification.path=tail(states,numClasses)[apply(post.prob, 2, which.max)]
+    classification=tail(states,numClasses)[apply(post.prob, 2, which.max)]
   }
-  return(list(classification,data[,(ncol(data)-numClasses+1):ncol(data)],bw))
+  res<-structure(list(classification=c(classification),data=data[,(ncol(data)-numClasses+1):ncol(data)],trained_hmm=bw),class="MixtureModelHMM")
+  return(res)
+}
+
+transition_table<-function(x){
+  site=head(cumsum(rle(hmm_result$classification)$lengths)+1, -1)
+  class_from=head(rle(hmm_result$classification)$values, -1)
+  class_to=tail(rle(hmm_result$classification)$values, -1)
+  data.frame(site,from,to)
 }

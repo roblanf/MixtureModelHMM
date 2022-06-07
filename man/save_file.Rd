@@ -4,14 +4,12 @@
 \alias{save_file}
 \title{Saves the predicted output to gz file}
 \usage{
-save_file(pred, algo, file_name)
+save_file(hmm_result, output_filename)
 }
 \arguments{
-\item{pred}{predict_tree/predict_tree_mixed returned list}
+\item{hmm_result}{run_hmm() returned object}
 
-\item{algo}{"viterbi" or "posterior"}
-
-\item{file_name}{name of file to be saved}
+\item{output_filename}{name of file to be saved}
 }
 \value{
 saves prediction output in .gz file
@@ -20,7 +18,6 @@ saves prediction output in .gz file
 Saves the predicted output to gz file
 }
 \examples{
-save_file(pred,"viterbi","output_v")
-save_file(pred,"posterior","output_p")
-v.pred<-system("gzcat output_v.gz",intern=TRUE)
+save_file(hmm_result,"output")
+classification<-system("gzcat output.gz",intern=TRUE)
 }
