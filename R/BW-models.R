@@ -15,6 +15,7 @@
 #' hmm_result=run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo",model = 3)
 #' viterbi_path<- pred[[1]];p.pred<-pred[[2]];conv<-pred[[3]]
 
+<<<<<<< HEAD
 run_HMM <- function(site_info,aln_info,model,iter,algorithm){
   if(missing(model)) {
     model=4
@@ -22,10 +23,14 @@ run_HMM <- function(site_info,aln_info,model,iter,algorithm){
   if(missing(iter)) {
     iter=10000
   }
+=======
+run_HMM <- function(site_info,aln_info,model=4,iter=10000){
+>>>>>>> 41b097b5d5bf10845689e4f28b555d90044dba3b
 
   tab=read.table(aln_info,header=TRUE)
   data=read.table(site_info,header=FALSE,fill=TRUE)
 
+  # add missing names to IQ-TREE output file
   if(data[1,2]=="LnL"){
     numClasses=(ncol(data)-2)
     colnames(data)<-c("site","LnL",paste("LnLW_",1:numClasses,sep=''))
