@@ -30,16 +30,17 @@ plot_predictions<-function(pred){
 
 #' Inital Plots
 #'
-#' @param file relative path of the input sitelh/siteprob file
+#' @param input_filepath file path to a .sitelh or a .siteprob file from IQ-TREE
+#' @param span the span of the kernel density plot (default 0.03)
 #'
-#' @return scatter plot for initial log-likelihood/posterior probabilities
+#' @return ggplot object with a scatter plot and smoothed kernel density
 #' @importFrom ggplot2 ggplot aes geom_point geom_smooth
 #' @export
 #'
 #' @examples
 #' plot_scatter("sample_data.sitelh")
 #' plot_scatter("sample_data.siteprob")
-plot_scatter<-function(sitein){
+plot_scatter<-function(input_filepath, span=0.03){
 
   data=read.table(sitein,header=FALSE,fill=TRUE)
 
@@ -55,10 +56,17 @@ plot_scatter<-function(sitein){
   } else{
     print("Invalid site info file")
   }
+  
   data[] <- lapply(data, function(x) as.numeric(as.character(x)))
+  
   vars=colnames(data[,(ncol(data)-numClasses+1):ncol(data)])
-  dl = data %>% pivot_longer(cols=all_of(vars),names_to = "type", values_to = "measure")
-  ggplot(dl, aes(x=Site, y = measure, colour=type)) + geom_point(size=0.5,alpha=0.1)+geom_smooth(method='loess', span=0.03)
+  
+  dl = data %>% 
+         pivot_longer(cols=all_of(vars),names_to = "type", values_to = "measure")
+  
+  ggplot(dl, aes(x=Site, y = measure, colour=type)) + 
+    geom_point(size=0.5,alpha=0.1) + 
+    geom_smooth(method='loess', span=span)
 }
 
 #' Transition Plots
