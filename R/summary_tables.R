@@ -1,3 +1,5 @@
+#' Create a transition table
+#'
 #' Where each row has:
 #' *site
 #' *class_to
@@ -18,7 +20,7 @@ transition_table<-function(hmm_result){
   data.frame(site,class_from,class_to)
 }
 
-#' Title
+#' Generate partition file
 #'
 #' @param hmm_result run_hmm() returned object
 #' @param output_filename name of file to be saved
@@ -48,3 +50,27 @@ partition_file<-function(hmm_result,output_filename){
   cat("end;\n")
   sink()
 }
+
+
+#' Summary
+#'
+#' @param hmm_result run_hmm() returned object
+#' @param ... additional arguments to be passed
+#'
+#' @return summary
+#' @export
+#'
+#' @examples
+#' summary(hmm_result)
+summary.MixtureModelHMM<-function(hmm_result, ...){
+
+  print(paste("Number of sites: ",nrow(hmm_result$data)))
+  print(paste("Number of classes: ",ncol(hmm_result$data)))
+  print("Sites in each class: ")
+  print(table(hmm_result$classification))
+  print(paste("Number of transitions: ",length(rle(hmm_result$classification)$value)-1))
+  print(paste("Algorithm used to determine the sequence: ",hmm_result$algorithm))
+  print(paste("Input files: ",hmm_result$site_input_file,hmm_result$aln_input_file))
+
+}
+

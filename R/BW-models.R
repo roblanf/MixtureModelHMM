@@ -104,7 +104,6 @@ run_HMM <- function(site_info,aln_info,model=4,iter=10000,algorithm="viterbi"){
     post.prob = posterior(bw,seq)
     classification=tail(states,numClasses)[apply(post.prob, 2, which.max)]
   }
-  res<-structure(list(classification=c(classification),data=data[,(ncol(data)-numClasses+1):ncol(data)],trained_hmm=bw),class="MixtureModelHMM")
+  res<-structure(list(classification=classification,data=data[,(ncol(data)-numClasses+1):ncol(data)],trained_hmm=bw,algorithm=algorithm,site_input_file=site_info,aln_input_file=aln_info),class="MixtureModelHMM")
   return(res)
 }
-
