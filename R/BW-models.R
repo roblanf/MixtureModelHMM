@@ -16,8 +16,8 @@
 
 run_HMM <- function(site_info,aln_info,model=4,iter=10000){
 
-  tab=read.table(alninfo,header=TRUE)
-  data=read.table(sitein,header=FALSE,fill=TRUE)
+  tab=read.table(aln_info,header=TRUE)
+  data=read.table(site_info,header=FALSE,fill=TRUE)
 
   # add missing names to IQ-TREE output file
   if(data[1,2]=="LnL"){
