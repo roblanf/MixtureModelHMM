@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @examples
-#' plot_predictions(pred)
+#' plot_predictions(hmm_result)
 plot_predictions<-function(pred){
 
   v.pred<- as.numeric(gsub("C","",pred[[1]]));p.pred<-as.numeric(gsub("C","",pred[[2]]));seq<-apply(pred[[4]], 1, which.max)
@@ -39,9 +39,9 @@ plot_predictions<-function(pred){
 #' @examples
 #' plot_scatter("sample_data.sitelh")
 #' plot_scatter("sample_data.siteprob")
-plot_scatter<-function(sitein){
+plot_scatter<-function(site_info){
 
-  data=read.table(sitein,header=FALSE,fill=TRUE)
+  data=read.table(site_info,header=FALSE,fill=TRUE)
 
   if(data[1,2]=="LnL"){
     numClasses=(ncol(data)-2)
@@ -63,14 +63,14 @@ plot_scatter<-function(sitein){
 
 #' Transition Plots
 #'
-#' @param pred predict_class/predict_class_mixed returned list
+#' @param hmm_result predict_class/predict_class_mixed returned list
 #'
 #' @return Transition diagram from final probabilities
 #' @export
 #'
 #' @examples
-#' plot_transitions(pred)
+#' plot_hmm_transitions(hmm_result)
 #'
-plot_transitions<-function(pred){
-  plot(pred[[5]])
+plot_hmm_transitions<-function(hmm_result){
+  plot(hmm_result[[4]])
 }
