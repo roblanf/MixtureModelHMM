@@ -51,7 +51,7 @@ If you have your files, and just want the answer without using R, you can use th
 
 ### Input data
 
-Let's start with an alignment of 32 species and 10,000 sites. This is the `example.phy` alignment in this repository, which you can download at [this link](https://raw.githubusercontent.com/roblanf/MixtureModelHMM/master/example.phy)
+Let's start with an alignment of 32 species and 10,000 sites. This is the `example.phy` alignment in this repository, which you can download at [this link](https://raw.githubusercontent.com/roblanf/MixtureModelHMM/master/worked_example/example.phy)
 
 ### Getting the right files from an IQ-TREE mixture model analysis
 
@@ -59,11 +59,13 @@ The MixtureModelHMM package will work with the output of _any_ mixture model fro
 
 > NB: when you are running mixture models on your own data (be that GHOST models or any other mixture model) you should pay close attention to selecting a good model. I used at `GTR+H4` model here because I _simulated_ the data under that model. Usually you wouldn't know the best model, and would want to spend some time figuring out the best avaialable model from your data. I keep it simple here so that we can focus on running the HMM.
 
-The `MixtureModelHMM` package requires a couple of additional files from IQ-TREE that provide information on the likelihood of each site under each model class (the `.sitelh` file) and on some additional features of each site (the `.alninfo` file). So, to use the `MixtureModelHMM` package you'll need to add a couple of things to your usual IQ-TREE command line (this analysis might take a few minutes):
+The `MixtureModelHMM` package requires a couple of additional files from IQ-TREE that provide information on the likelihood of each site under each model class (the `.sitelh` file) and on some additional features of each site (the `.alninfo` file). So, to use the `MixtureModelHMM` package you'll need to add a couple of things to your usual IQ-TREE command line:
 
 ```
 iqtree -s example.phy -m GTR+H4 -wslm -alninfo
 ```
+
+This analysis will take around 10 minutes (depending on your computer). If you'd like to skip ahead, you can download the output files from this analysis from the [worked_example folder](https://github.com/roblanf/MixtureModelHMM/master/worked_example).
 
 The options we used above are:
 
@@ -84,6 +86,7 @@ The point of the HMM is to take site likelihoods, and leverage the fact that nei
 Before running the HMM, it's a really good idea to just look at the raw site likelihoods from IQ-TREE, to see for yourself if neighbouring sites really do have similar class assignments. For this you can use the `plot_scatter()` function as follows:
 
 ```{r}
+library("MixtureModelHMM")
 plot_scatter("example.sitelh")
 ```
 
