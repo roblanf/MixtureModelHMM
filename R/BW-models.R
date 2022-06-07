@@ -4,28 +4,19 @@
 #' @param aln_info relative path of the alignment file
 #' @param model Choose model 1,2,3 or 4. Default=4
 #' @param iter maximum iterations. Default=10000
-#' @param algorithm to be used to estimate final sequence of classes
+#' @param algorithm viterbi/posterior algoithm to be used to estimate final sequence of classes
 #'
-#' @return viterbi path, posterior path and convergence truth as a list
+#' @return viterbi path or posterior path as classification as a list
 #' @importFrom aphid train Viterbi posterior
 #' @importFrom testit has_warning
 #' @export
 #'
 #' @examples
-#' hmm_result=run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo",model = 3)
-#' viterbi_path<- pred[[1]];p.pred<-pred[[2]];conv<-pred[[3]]
+#' hmm_result = run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo",model = 3)
+#' classification <- pred[[1]]
 
-<<<<<<< HEAD
-run_HMM <- function(site_info,aln_info,model,iter,algorithm){
-  if(missing(model)) {
-    model=4
-  }
-  if(missing(iter)) {
-    iter=10000
-  }
-=======
-run_HMM <- function(site_info,aln_info,model=4,iter=10000){
->>>>>>> 41b097b5d5bf10845689e4f28b555d90044dba3b
+
+run_HMM <- function(site_info,aln_info,model=4,iter=10000,algorithm="viterbi"){
 
   tab=read.table(aln_info,header=TRUE)
   data=read.table(site_info,header=FALSE,fill=TRUE)
@@ -98,17 +89,20 @@ run_HMM <- function(site_info,aln_info,model=4,iter=10000){
   # Baum-Welch
   warn=has_warning(bw <- train(hmm,seq,method = "BaumWelch",maxiter=iter,logspace = FALSE,cores="autodetect",quiet=TRUE))
   if (warn==TRUE){
-    print("Not converged")
+    warning("Your HMM analysis did not converge. To address this, you should increase the number of iterations. You used N iterations, and a good starting point given that this didn't converge is to double this to Y iterations.
+            You can specify the number of iterations in the run_HMM() function using the `iter` argument", call. = FALSE)
     conv<-FALSE
     #bw <- train(hmm,seq,method = "Viterbi",logspace = FALSE,quiet=TRUE)
   }
 
   # get viterbi path
-  viterbi = Viterbi(bw,seq)
-  viterbi.path=rownames(bw$E)[viterbi$path + 1]
-
+  if (algorithm == "viterbi"){
+    viterbi = Viterbi(bw,seq)
+    classification=rownames(bw$E)[viterbi$path + 1]
+  } else if(algorithm == "posterior"){
   #get posterior highest state
   post.prob = posterior(bw,seq)
-  post.path=tail(states,numClasses)[apply(post.prob, 2, which.max)]
-  return(list(viterbi.path,post.path,conv,data[,(ncol(data)-numClasses+1):ncol(data)],bw))
+  classification.path=tail(states,numClasses)[apply(post.prob, 2, which.max)]
+  return(list(classification,data[,(ncol(data)-numClasses+1):ncol(data)],bw))
+  }
 }

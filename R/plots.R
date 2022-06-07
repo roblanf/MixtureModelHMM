@@ -1,6 +1,6 @@
 #' Prediction Plots
 #'
-#' @param pred predict_class/predict_class_mixed returned list
+#' @param hmm_result run_hmm() returned object
 #'
 #' @return input, viterbi and posterior decoding predicted path plot
 #' @importFrom magrittr %>%
@@ -12,11 +12,11 @@
 #'
 #' @examples
 #' plot_predictions(hmm_result)
-plot_predictions<-function(pred){
+plot_predictions<-function(hmm_result){
 
-  v.pred<- as.numeric(gsub("C","",pred[[1]]));p.pred<-as.numeric(gsub("C","",pred[[2]]));seq<-apply(pred[[4]], 1, which.max)
-  d<-t(data.frame(v.pred,p.pred,seq))
-  row.names(d) <- c("v.pred","p.pred","input.seq")
+  classification<- as.numeric(gsub("C","",hmm_result[[1]]));seq<-apply(hmm_result[[2]], 1, which.max)
+  d<-t(data.frame(classification,seq))
+  row.names(d) <- c("classification","input.seq")
   d <- data.frame(names = row.names(d), d)
   df2<-d %>%
     melt(id.vars = "names") %>%
@@ -40,11 +40,8 @@ plot_predictions<-function(pred){
 #' @examples
 #' plot_scatter("sample_data.sitelh")
 #' plot_scatter("sample_data.siteprob")
-<<<<<<< HEAD
-plot_scatter<-function(site_info){
-=======
+
 plot_scatter<-function(input_filepath, span=0.03){
->>>>>>> 41b097b5d5bf10845689e4f28b555d90044dba3b
 
   data=read.table(site_info,header=FALSE,fill=TRUE)
 
@@ -60,16 +57,16 @@ plot_scatter<-function(input_filepath, span=0.03){
   } else{
     print("Invalid site info file")
   }
-  
+
   data[] <- lapply(data, function(x) as.numeric(as.character(x)))
-  
+
   vars=colnames(data[,(ncol(data)-numClasses+1):ncol(data)])
-  
-  dl = data %>% 
+
+  dl = data %>%
          pivot_longer(cols=all_of(vars),names_to = "type", values_to = "measure")
-  
-  ggplot(dl, aes(x=Site, y = measure, colour=type)) + 
-    geom_point(size=0.5,alpha=0.1) + 
+
+  ggplot(dl, aes(x=Site, y = measure, colour=type)) +
+    geom_point(size=0.5,alpha=0.1) +
     geom_smooth(method='loess', span=span)
 }
 
@@ -84,5 +81,5 @@ plot_scatter<-function(input_filepath, span=0.03){
 #' plot_hmm_transitions(hmm_result)
 #'
 plot_hmm_transitions<-function(hmm_result){
-  plot(hmm_result[[4]])
+  plot(hmm_result[[3]])
 }

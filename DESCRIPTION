@@ -1,18 +1,10 @@
 Package: MixtureModelHMM
 Type: Package
-<<<<<<< HEAD
-Title: Predicts trees for given sites
-Version: 0.3.0
-Author: Rahil Vora
-Maintainer: Rahil Vora <rahil.vora@anu.edu.au>
-Description: The .sitelh along with .alninfo output files of IQ-TREE mixture models is used as input to predict the class for the sites.
-=======
 Title: MixtureModelHMM
 Version: 0.2.0
 Author: Rahil Vora and Rob Lanfear
 Maintainer: Rahil Vora <rahil.vora@anu.edu.au>, Rob Lanfear <rob.lanfear@anu.edu.au>
 Description: This package uses Hidden Markov Models to assign sites to classes from the output of an IQ-TREE mixture model analysis
->>>>>>> 41b097b5d5bf10845689e4f28b555d90044dba3b
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true

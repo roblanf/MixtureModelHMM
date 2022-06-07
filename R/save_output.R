@@ -1,33 +1,19 @@
 #' Saves the predicted output to gz file
 #'
-#' @param hmm_result predict_tree/predict_tree_mixed returned list
-#' @param file_name name of file to be saved
-#' @param algo "viterbi" or "posterior"
+#' @param hmm_result run_hmm() returned object
+#' @param output_filename name of file to be saved
 #'
 #' @return saves prediction output in .gz file
 #' @export
 #'
 #' @examples
-#' save_file(pred,"viterbi","output_v")
-#' save_file(pred,"posterior","output_p")
-#' v.pred<-system("gzcat output_v.gz",intern=TRUE)
-save_file<-function(hmm_result,algo,file_name){
+#' save_file(hmm_result,"output")
+#' classification<-system("gzcat output.gz",intern=TRUE)
+save_file<-function(hmm_result,output_filename){
 
-  if(missing(algo)) {
-    algo="viterbi"
-  }
-  if(algo=="viterbi"){
-    vit.pred=hmm_result[[1]]
-    df1=data.frame(vit.pred)
-  }
-  else if(algo=="posterior"){
-    post.pred=hmm_result[[2]]
-    df1=data.frame(post.pred)
-  }
-  else{
-    print("Invalid algorithm choice")
-  }
-  gz1 <- gzfile(paste(file_name,".gz",sep=''), "w")
+  classification=hmm_result[[1]]
+  df1=data.frame(classification)
+  gz1 <- gzfile(paste(output_filename,".gz",sep=''), "w")
   write.table(df1, gz1,row.names = F, col.names = F,quote=F)
   close(gz1)
 
@@ -45,7 +31,7 @@ save_file<-function(hmm_result,algo,file_name){
 #' @examples
 #' save_report(hmm_result,"report")
 save_report<-function(hmm_result,output_filename){
-  tained_model<-hmm_result[[5]]
+  tained_model<-hmm_result[[3]]
   sink(paste(output_filename,'.txt',sep = ""))
   cat("=============================\n")
   cat("Probability of transition of one class to another\n")
@@ -63,6 +49,8 @@ save_report<-function(hmm_result,output_filename){
   cat("Model 4 does not apply for mixture models as all classes have same parsimony\n")
   print(tained_model$E)
   cat("=============================\n")
+  classification<- hmm_result[[1]]
+  ###############################
   v.pred<- hmm_result[[1]];p.pred<-hmm_result[[2]]
   cat("Predicted sites for each class\n")
   cat("Viterbi dynamic Program\n")
