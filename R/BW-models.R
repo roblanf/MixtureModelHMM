@@ -108,9 +108,3 @@ run_HMM <- function(site_info,aln_info,model=4,iter=10000,algorithm="viterbi"){
   return(res)
 }
 
-transition_table<-function(x){
-  site=head(cumsum(rle(hmm_result$classification)$lengths)+1, -1)
-  class_from=head(rle(hmm_result$classification)$values, -1)
-  class_to=tail(rle(hmm_result$classification)$values, -1)
-  data.frame(site,from,to)
-}

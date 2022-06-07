@@ -7,6 +7,7 @@
 #' @export
 #'
 #' @examples
+#' hmm_result = run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo",model = 3)
 #' save_file(hmm_result,"output")
 #' classification<-system("gzcat output.gz",intern=TRUE)
 save_file<-function(hmm_result,output_filename){
@@ -25,10 +26,11 @@ save_file<-function(hmm_result,output_filename){
 #' @param hmm_result predict_tree/predict_tree_mixed returned list
 #' @param output_filename name of file to be saved
 #'
-#' @return saves prediction report in .txt
+#' @return saves prediction report in .txt format
 #' @export
 #'
 #' @examples
+#' hmm_result = run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo",model = 3)
 #' save_report(hmm_result,"report")
 save_report<-function(hmm_result,output_filename){
   tained_model<-hmm_result[[3]]
@@ -49,7 +51,7 @@ save_report<-function(hmm_result,output_filename){
   cat("Model 4 does not apply for mixture models as all classes have same parsimony\n")
   print(tained_model$E)
   cat("=============================\n")
-  classification<- hmm_result[[1]]
+  classification<- hmm_result$classification
   ###############################
   v.pred<- hmm_result[[1]];p.pred<-hmm_result[[2]]
   cat("Predicted sites for each class\n")

@@ -16,6 +16,7 @@ Transition diagram from final probabilities
 Transition Plots
 }
 \examples{
+hmm_result = run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo",model = 3)
 plot_hmm_transitions(hmm_result)
 
 }

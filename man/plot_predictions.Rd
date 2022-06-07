@@ -10,11 +10,12 @@ plot_predictions(hmm_result)
 \item{hmm_result}{run_hmm() returned object}
 }
 \value{
-input, viterbi and posterior decoding predicted path plot
+hmm_input, viterbi or posterior decoding predicted path plot
 }
 \description{
 Prediction Plots
 }
 \examples{
+hmm_result = run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo",model = 3)
 plot_predictions(hmm_result)
 }

@@ -12,11 +12,12 @@ save_report(hmm_result, output_filename)
 \item{output_filename}{name of file to be saved}
 }
 \value{
-saves prediction report in .txt
+saves prediction report in .txt format
 }
 \description{
 Generates report
 }
 \examples{
+hmm_result = run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo",model = 3)
 save_report(hmm_result,"report")
 }

@@ -2,7 +2,7 @@
 #'
 #' @param hmm_result run_hmm() returned object
 #'
-#' @return input, viterbi and posterior decoding predicted path plot
+#' @return hmm_input, viterbi or posterior decoding predicted path plot
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom tidyr pivot_longer
@@ -11,6 +11,7 @@
 #' @export
 #'
 #' @examples
+#' hmm_result = run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo",model = 3)
 #' plot_predictions(hmm_result)
 plot_predictions<-function(hmm_result){
 
@@ -38,8 +39,8 @@ plot_predictions<-function(hmm_result){
 #' @export
 #'
 #' @examples
-#' plot_scatter("sample_data.sitelh")
-#' plot_scatter("sample_data.siteprob")
+#' plot_scatter(input_filepath = "sample_data.sitelh")
+#' plot_scatter(input_filepath = "sample_data.siteprob")
 
 plot_scatter<-function(input_filepath, span=0.03){
 
@@ -78,6 +79,7 @@ plot_scatter<-function(input_filepath, span=0.03){
 #' @export
 #'
 #' @examples
+#' hmm_result = run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo",model = 3)
 #' plot_hmm_transitions(hmm_result)
 #'
 plot_hmm_transitions<-function(hmm_result){

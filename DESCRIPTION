@@ -9,6 +9,6 @@ License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.2
-Imports: aphid,testit,utils,tidyverse,reshape2
+Imports: aphid,testit,utils,tidyverse,reshape2,dplyr, ggplot2, magrittr, tidyr
 URL: https://github.com/roblanf/MixtureModelHMM
 BugReports: https://github.com/roblanf/MixtureModelHMM/issues

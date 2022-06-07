@@ -18,6 +18,6 @@ ggplot object with a scatter plot and smoothed kernel density
 Inital Plots
 }
 \examples{
-plot_scatter("sample_data.sitelh")
-plot_scatter("sample_data.siteprob")
+plot_scatter(input_filepath = "sample_data.sitelh")
+plot_scatter(input_filepath = "sample_data.siteprob")
 }

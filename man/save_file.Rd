@@ -18,6 +18,7 @@ saves prediction output in .gz file
 Saves the predicted output to gz file
 }
 \examples{
+hmm_result = run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo",model = 3)
 save_file(hmm_result,"output")
 classification<-system("gzcat output.gz",intern=TRUE)
 }
