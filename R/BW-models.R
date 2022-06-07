@@ -95,14 +95,14 @@ run_HMM <- function(site_info,aln_info,model=4,iter=10000,algorithm="viterbi"){
     #bw <- train(hmm,seq,method = "Viterbi",logspace = FALSE,quiet=TRUE)
   }
 
-  # get viterbi path
   if (algorithm == "viterbi"){
+    # get viterbi path
     viterbi = Viterbi(bw,seq)
     classification=rownames(bw$E)[viterbi$path + 1]
   } else if(algorithm == "posterior"){
-  #get posterior highest state
-  post.prob = posterior(bw,seq)
-  classification.path=tail(states,numClasses)[apply(post.prob, 2, which.max)]
-  return(list(classification,data[,(ncol(data)-numClasses+1):ncol(data)],bw))
+    #get posterior highest state
+    post.prob = posterior(bw,seq)
+    classification.path=tail(states,numClasses)[apply(post.prob, 2, which.max)]
   }
+  return(list(classification,data[,(ncol(data)-numClasses+1):ncol(data)],bw))
 }
