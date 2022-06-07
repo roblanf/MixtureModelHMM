@@ -14,13 +14,7 @@
 #' pred=predict_class("./iqtree/sample.siteprob","./iqtree/sample.alninfo",3)
 #' v.pred<- pred[[1]];p.pred<-pred[[2]];conv<-pred[[3]]
 
-predict_class <- function(sitein,alninfo,model,iter){
-  if(missing(model)) {
-    model=4
-  }
-  if(missing(iter)) {
-    iter=10000
-  }
+run_HMM <- function(sitein,alninfo,model=4,iter=10000){
 
   tab=read.table(alninfo,header=TRUE)
   data=read.table(sitein,header=FALSE,fill=TRUE)
