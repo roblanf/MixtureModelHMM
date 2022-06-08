@@ -15,9 +15,9 @@
 #' plot_predictions(hmm_result)
 plot_predictions<-function(hmm_result){
 
-  classification<- as.numeric(gsub("C","",hmm_result[[1]]));seq<-apply(hmm_result[[2]], 1, which.max)
+  classification<- as.numeric(gsub("C","",hmm_result$classification));seq<-apply(hmm_result$data, 1, which.max)
   d<-t(data.frame(classification,seq))
-  row.names(d) <- c("classification","hmm_input_seq")
+  row.names(d) <- c(paste("classification",hmm_result$algorithm),"hmm_input_seq")
   d <- data.frame(names = row.names(d), d)
   df2<-d %>%
     melt(id.vars = "names") %>%
@@ -83,5 +83,8 @@ plot_scatter<-function(input_filepath, span=0.03){
 #' plot_hmm_transitions(hmm_result)
 #'
 plot_hmm_transitions<-function(hmm_result){
-  plot(hmm_result[[3]])
+  plot(hmm_result$trained_hmm)
+  p1 <-  recordPlot()
+  plot.new()
+  p1
 }

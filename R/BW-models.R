@@ -1,4 +1,4 @@
-#' Predict Class function
+#' Run_HMM to Post-processes the output of phylogenetic mixture models using HMMs
 #'
 #' @param site_info relative path of the input .sitelh/.siteprob file
 #' @param aln_info relative path of the alignment file
@@ -6,7 +6,7 @@
 #' @param iter maximum iterations. Default=10000
 #' @param algorithm viterbi/posterior algoithm to be used to estimate final sequence of classes
 #'
-#' @return viterbi path or posterior path as classification as a list
+#' @return viterbi path or posterior classification as an object
 #' @importFrom aphid train Viterbi posterior
 #' @importFrom testit has_warning
 #' @export
@@ -104,6 +104,10 @@ run_HMM <- function(site_info,aln_info,model=4,iter=10000,algorithm="viterbi"){
     post.prob = posterior(bw,seq)
     classification=tail(states,numClasses)[apply(post.prob, 2, which.max)]
   }
-  res<-structure(list(classification=classification,data=data[,(ncol(data)-numClasses+1):ncol(data)],trained_hmm=bw,algorithm=algorithm,site_input_file=site_info,aln_input_file=aln_info),class="MixtureModelHMM")
+  res<-structure(list(classification=classification,data=data[,(ncol(data)-numClasses+1):ncol(data)],trained_hmm=bw,algorithm=algorithm,
+                      site_input_file=site_info,aln_input_file=aln_info),class="MixtureModelHMM")
+  res$alignment_plot=plot_predictions(res)
+  res$transition_plot=plot_hmm_transitions(res)
+  res$hmm_transition_table=transition_table(res)
   return(res)
 }

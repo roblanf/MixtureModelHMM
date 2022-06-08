@@ -31,11 +31,11 @@ transition_table<-function(hmm_result){
 #' @examples
 #' hmm_result = run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo",model = 3)
 #' partition_file(hmm_result,"hmm_partitions")
-partition_file<-function(hmm_result,output_filename){
+save_partition_file<-function(hmm_result,output_filename){
   classification<-hmm_result$classification
   site=cumsum(rle(hmm_result$classification)$lengths)
-  site=c(1,site)
-  from_site=head(site,-1)
+  site=c(0,site)
+  from_site=head(site,-1)+1
   to_site=tail(site,-1)
   classes=as.numeric(gsub("C","",rle(hmm_result$classification)$values))
   partition_table=data.frame(from_site,to_site,classes)
@@ -64,13 +64,13 @@ partition_file<-function(hmm_result,output_filename){
 #' summary(hmm_result)
 summary.MixtureModelHMM<-function(hmm_result, ...){
 
+  print(paste("Input files: ",hmm_result$site_input_file,hmm_result$aln_input_file))
   print(paste("Number of sites: ",nrow(hmm_result$data)))
   print(paste("Number of classes: ",ncol(hmm_result$data)))
   print("Sites in each class: ")
   print(table(hmm_result$classification))
   print(paste("Number of transitions: ",length(rle(hmm_result$classification)$value)-1))
   print(paste("Algorithm used to determine the sequence: ",hmm_result$algorithm))
-  print(paste("Input files: ",hmm_result$site_input_file,hmm_result$aln_input_file))
 
 }
 

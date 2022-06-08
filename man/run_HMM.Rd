@@ -2,7 +2,7 @@
 % Please edit documentation in R/BW-models.R
 \name{run_HMM}
 \alias{run_HMM}
-\title{Predict Class function}
+\title{Run_HMM to Post-processes the output of phylogenetic mixture models using HMMs}
 \usage{
 run_HMM(site_info, aln_info, model = 4, iter = 10000, algorithm = "viterbi")
 }
@@ -18,10 +18,10 @@ run_HMM(site_info, aln_info, model = 4, iter = 10000, algorithm = "viterbi")
 \item{algorithm}{viterbi/posterior algoithm to be used to estimate final sequence of classes}
 }
 \value{
-viterbi path or posterior path as classification as a list
+viterbi path or posterior classification as an object
 }
 \description{
-Predict Class function
+Run_HMM to Post-processes the output of phylogenetic mixture models using HMMs
 }
 \examples{
 hmm_result = run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo",model = 3)
