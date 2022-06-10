@@ -107,7 +107,7 @@ run_HMM <- function(site_info,aln_info,model=4,iter=10000,algorithm="viterbi"){
   res<-structure(list(classification=classification,data=data[,(ncol(data)-numClasses+1):ncol(data)],trained_hmm=bw,algorithm=algorithm,
                       site_input_file=site_info,aln_input_file=aln_info),class="MixtureModelHMM")
   res$alignment_plot=plot_predictions(res)
-  res$transition_plot=plot_hmm_transitions(res)
+  res$hmm_probabilities=list(bw$A,bw$E)
   res$hmm_transition_table=transition_table(res)
   return(res)
 }
