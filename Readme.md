@@ -107,13 +107,17 @@ This is sufficient to show that it's sensible to run an HMM on these data, so le
 Now we know it's sensible to run an HMM, we can run it in R like this:
 
 ```{r}
-hmm_result <- run_HMM(site_info = "mydata.sitelh", aln_info = "mydata.alninfo")
+hmm_result <- run_HMM(site_info = "example.phy.sitelh", aln_info = "example.phy.alninfo")
 ```
 
-The HMM trys to figure out how to assign every site in the alignment to a class, using the fact that neighbouring tend to be in the same class to help it. One way to think about this is that the HMM is a way of cleaning up a noisy signal. The HMM accounts for 
+the `run_HMM` function takes two files as input:
 
+* `site_info`: here you can pass either the `.sitelh` or the `.siteprob` file from your IQ-TREE analysis. In amost all of our tests and simulations, we found that the HMM performs better using site likelihoods (`.sitelh` file) rather than site posterior probabilities (the `.siteprob` file), so we recommend using it here.
+* `aln_info`: here you have to point to a `.alninfo` file from IQ-TREE.
 
-Then you can view the key plot like this:
+The HMM trys to figure out how to assign every site in the alignment to a class, using the fact that neighbouring tend to be in the same class to help it. One way to think about this is that the HMM is a way of cleaning up the noisy signal in the plot above. Along the way the HMM accounts for issues associated with phylogenetic data, such as the fact that constant sites don't contain much useful information.
+
+Once the HMM has finished, you can see the results like this:
 
 ```
 plot_predictions(hmm_result)
@@ -122,7 +126,13 @@ plot_predictions(hmm_result)
 and write a report on the HMM with a lot more information like this:
 
 ```
-save_file((hmm_result = hmm_result, output_filename = "hmm_report.txt"))
+save_report(hmm_result = hmm_result, output_filename = "hmm_report.txt")
+```
+
+and we can save the site classifications of the HMM like this:
+
+```
+save_file(hmm_result = hmm_result, output_filename = "hmm_output.gzip")
 ```
 
 ## Description of the approach
