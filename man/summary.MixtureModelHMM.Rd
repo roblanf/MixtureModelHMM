@@ -4,12 +4,10 @@
 \alias{summary.MixtureModelHMM}
 \title{Summary}
 \usage{
-\method{summary}{MixtureModelHMM}(hmm_result, ...)
+\method{summary}{MixtureModelHMM}(hmm_result)
 }
 \arguments{
 \item{hmm_result}{run_hmm() returned object}
-
-\item{...}{additional arguments to be passed}
 }
 \value{
 summary

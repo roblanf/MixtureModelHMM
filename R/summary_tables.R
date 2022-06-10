@@ -39,6 +39,7 @@ transition_table<-function(hmm_result){
 #'
 #' @return saves partition file
 #' @importFrom dplyr summarise group_by
+#' @importFrom magrittr %>%
 #' @export
 #'
 #' @examples
@@ -93,14 +94,13 @@ save_partition_file<-function(hmm_result,output_filename){
 #' Summary
 #'
 #' @param hmm_result run_hmm() returned object
-#' @param ... additional arguments to be passed
 #'
 #' @return summary
 #' @export
 #'
 #' @examples
 #' summary(hmm_result)
-summary.MixtureModelHMM<-function(hmm_result, ...){
+summary.MixtureModelHMM<-function(hmm_result){
 
   print(paste("Input files: ",hmm_result$site_input_file,hmm_result$aln_input_file))
   print(paste("Number of sites: ",nrow(hmm_result$data)))

@@ -19,10 +19,12 @@ plot_predictions<-function(hmm_result){
   d<-t(data.frame(classification,seq))
   row.names(d) <- c(paste("classification",hmm_result$algorithm),"hmm_input_seq")
   d <- data.frame(names = row.names(d), d)
+
   df2<-d %>%
     melt(id.vars = "names") %>%
     mutate(Site = 1)
 
+  print("# Making alignment_plot")
   df2 %>%
     ggplot(aes(x = names, y = Site, group = names, fill = as.factor(value))) +
     geom_col() + coord_flip() + guides(fill=guide_legend(title='Class'))
@@ -84,7 +86,4 @@ plot_scatter<-function(input_filepath, span=0.03){
 #'
 plot_hmm_transitions<-function(hmm_result){
   plot(hmm_result$trained_hmm)
-  p1 <-  recordPlot()
-  plot.new()
-  p1
 }
