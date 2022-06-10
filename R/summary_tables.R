@@ -38,6 +38,7 @@ transition_table<-function(hmm_result){
 #' @param output_filename name of file to be saved
 #'
 #' @return saves partition file
+#' @importFrom dplyr summarise group_by
 #' @export
 #'
 #' @examples
