@@ -1,26 +1,3 @@
-#' Saves the predicted output to gz file
-#'
-#' @param hmm_result run_hmm() returned object
-#' @param output_filename name of file to be saved
-#'
-#' @return saves prediction output in .gz file
-#' @export
-#'
-#' @examples
-#' hmm_result = run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo",model = 3)
-#' save_file(hmm_result,"output")
-#' classification<-system("gzcat output.gz",intern=TRUE)
-save_file<-function(hmm_result,output_filename){
-
-  classification=hmm_result[[1]]
-  df1=data.frame(classification)
-  gz1 <- gzfile(paste(output_filename,".gz",sep=''), "w")
-  write.table(df1, gz1,row.names = F, col.names = F,quote=F)
-  close(gz1)
-
-}
-
-
 #' Generates report
 #'
 #' @param hmm_result predict_tree/predict_tree_mixed returned list

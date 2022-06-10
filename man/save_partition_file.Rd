@@ -12,7 +12,7 @@ save_partition_file(hmm_result, output_filename)
 \item{output_filename}{name of file to be saved}
 }
 \value{
-saves partition file in .nex format
+saves partition file
 }
 \description{
 Generate partition file
