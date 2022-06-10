@@ -87,7 +87,7 @@ The point of the HMM is to take site likelihoods or probabilities, and leverage 
 
 Before running the HMM, it's a really good idea to just look at the raw data from IQ-TREE, to see for yourself if neighbouring sites really do have similar class assignments. For this you can use the `plot_scatter()` function as follows:
 
-```{r}
+```r
 library("MixtureModelHMM")
 plot_scatter("example.phy.siteprob")
 ```
@@ -106,7 +106,7 @@ This is sufficient to show that it's sensible to run an HMM on these data, so le
 
 Now we know it's sensible to run an HMM, we can run it in R like this:
 
-```{r}
+```r
 hmm_result <- run_HMM(site_info = "example.phy.sitelh", aln_info = "example.phy.alninfo")
 ```
 
@@ -117,23 +117,127 @@ the `run_HMM` function takes two files as input:
 
 The HMM trys to figure out how to assign every site in the alignment to a class, using the fact that neighbouring tend to be in the same class to help it. One way to think about this is that the HMM is a way of cleaning up the noisy signal in the plot above. Along the way the HMM accounts for issues associated with phylogenetic data, such as the fact that constant sites don't contain much useful information.
 
-Once the HMM has finished, you can see the results like this:
+You can get a quick summary of the hmm result like this:
+
+
+```r
+summary(hmm_result)
+```
+
+which in this case will show:
 
 ```
-plot_predictions(hmm_result)
+[1] "Input files:  example.phy.sitelh example.phy.alninfo"
+[1] "Number of sites:  10000"
+[1] "Number of classes:  4"
+[1] "Sites in each class: "
+
+  C1   C2   C3   C4 
+2500 2497 2500 2503 
+[1] "Number of transitions:  8"
+[1] "Algorithm used to determine the sequence:  viterbi"
 ```
 
-and write a report on the HMM with a lot more information like this:
+### The key output from the HMM
+
+Most people will be primarily interested in three things from the HMM. Here they are.
+
+#### `alignment_plot`
+
+```r
+hmm_result$alignment_plot
+```
+Will show you this plot:
+
+![a plot of the hmm output along the alignment](https://github.com/roblanf/MixtureModelHMM/blob/master/img/alignment_plot.png)
+
+This plot shows the alignment sites along the x-axis. On the top panel it shows the maximum likelihood (or posterior probability, if that's the file you used as input) class for each site in your alignment. This is the input data for the HMM. On the bottom panel it shows the output of the HMM - i.e. which classes the HMM has assigned each site to. You can compare this plot to the scatter plot above, and see how the HMM cleans up the noisy signal in the input data.
+
+#### `hmm_transition_table`
+
+The plot above shows that the HMM has a few transitions between classes. If we go from right to left, the classes go: 3, 2, 3, 1, 2, 1, 4, 2, 4. The `hmm_transition_table` shows you exactly which sites the transitions occurred at.
+
+```r
+hmm_result$hmm_transition_table
+``` 
+
+Will show you this:
 
 ```
+  site class_from class_to
+1 1501         C3       C2
+2 2301         C2       C3
+3 3301         C3       C1
+4 4301         C1       C2
+5 5101         C2       C1
+6 6601         C1       C4
+7 7103         C4       C2
+8 8000         C2       C4
+```
+
+#### `classification`
+
+`classification` is a vector where you can look up the HMM classification of every single site in your alignment.
+
+For example, if we wanted to see the transition between class 3 and class 2, then we might want to look at the sites around site 1501 (the location of the transition above). We could do that as follows:
+
+```r
+hmm_result$classification[1495:1505]
+```
+
+This will show you the following:
+
+```
+ [1] "C3" "C3" "C3" "C3" "C3" "C3" "C2" "C2" "C2" "C2" "C2"
+```
+
+And you can see that at site 1500 the output is `C3`, and it switches to `C2` at site 1501.
+
+### Output options
+
+Obviously you can output anything you like about the HMM from the `hmm_results` object (full details below). 
+
+The `MixtureModelHMM` package has a few functions to write out specific files that we hope are helpful.
+
+#### `save_report()`
+
+This will save a text file that contains a lot of useful information about your results:
+
+```r
 save_report(hmm_result = hmm_result, output_filename = "hmm_report.txt")
 ```
 
-and we can save the site classifications of the HMM like this:
+#### `save_file()`
 
+Sometimes you might want to save all the classifications, and this might be large. The `save_file()` function allows you to save it directly to a gzipped file: 
+
+```r
+save_file(hmm_result = hmm_result, output_filename = "hmm_output")
 ```
-save_file(hmm_result = hmm_result, output_filename = "hmm_output.gzip")
+
+
+#### `save_partitioning_scheme()`
+
+If you want to output the information from the HMM as a partitioning scheme in NEXUS format, you can do this:
+
+```r
+save_partitioning_scheme(hmm_result = hmm_result, output_filename = "hmm_partitions.nex")
 ```
+
+### Everything that's in the output
+
+The `hmm_result` object is an object of class 'MixtureModelHMM'. This object contains all the information we think you might ever be interested in.
+
+* `$clasification`: a vector the same length as your alignment, which contains the final classification for each site
+* `$data`: the input data loaded via the `site_info` argument to `run_HMM()`
+* `$trained_hmm`: an object of class `HMM`, which describes the final Hidden Markov Model you trained
+* `$algorithm`: the name of the algorithm used to get the final path through the HMM
+* `$site_input_file`: the name of the site input file loaded via `site_info` to `run_HMM()`
+* `$aln_input_file`: the name of the alignment input file loaded via `aln_info` to `run_HMM()`
+* `$alignment_plot`: a plot that shows the input data vs. what the HMM inferred
+* `$transition_plot`: a plot that shows the structure of the final HMM
+* `$hmm_transition_table`: a table that describes each inferred transition from the HMM
+
 
 ## Description of the approach
 
