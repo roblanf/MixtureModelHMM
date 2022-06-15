@@ -7,7 +7,7 @@
 
 ## What is MixtureModelHMM
 
-MixtureModelHMM implements _Hidden Markov Model_ a probrabilistic model used to analyze sequencial data. It is used to post-process output of phylogenetic mizture models from [IQ-TREE](http://www.iqtree.org/). The package implements `Baum-Welch` Algorithm to train the HMM model on given input file. The input files can be either the site likelihood or site probability file and the alignment information file. Once the HMM is trained the model could be used to determine the final class associated with each sites using either `viterbi` or `posterier decoding` algorithm. The default algorithm for predicting class boundries is set to `veterbi`. The output of the function returns an object class consisting of vector for each classes assigned to a given class in a [vector form](#classification) along with a [prediction plot](#alignment_plot) and [hmm transition table](#hmm_transition_table).
+MixtureModelHMM implements _Hidden Markov Model_ a probabilistic model used to analyze sequencial data. It is used to post-process output of phylogenetic mizture models from [IQ-TREE](http://www.iqtree.org/). The package implements `Baum-Welch` Algorithm to train the HMM model on given input file. The input files can be either the site likelihood or site probability file and the alignment information file. Once the HMM is trained the model could be used to determine the final class associated with each sites using either `viterbi` or `posterier decoding` algorithm. The default algorithm for predicting class boundries is set to `veterbi`. The output of the function returns an object class consisting of vector for each classes assigned to a given class in a [vector form](#classification) along with a [prediction plot](#alignment_plot) and [hmm transition table](#hmm_transition_table).
 
 
 ## Installation
@@ -236,7 +236,7 @@ save_partitioning_scheme(hmm_result = hmm_result, output_filename = "hmm_partiti
 
 The `hmm_result` object is an object of class 'MixtureModelHMM'. This object contains all the information we think you might ever be interested in.
 
-* `$clasification`: a vector the same length as your alignment, which contains the final classification for each site
+* `$classification`: a vector the same length as your alignment, which contains the final classification for each site
 * `$data`: the input data loaded via the `site_info` argument to `run_HMM()`
 * `$trained_hmm`: an object of class `HMM`, which describes the final Hidden Markov Model you trained
 * `$algorithm`: the name of the algorithm used to get the final path through the HMM
@@ -249,6 +249,35 @@ The `hmm_result` object is an object of class 'MixtureModelHMM'. This object con
 
 ## Description of the approach
 
+#### Flowchart
 ![Flowchart](https://user-images.githubusercontent.com/11074196/173745320-c85c9a9a-30b0-4e10-bc7f-1231f939a49c.png)
 
 
+We can either use posterior probability for each site(.siteprob file) or log-likelihood for each site(.sitelh file) as an input for `run_HMM()`.
+
+* Step 1: We create a sequence of classes with maximum log-likelihood(or posterior proabilility) for each given site.\
+          
+  $Cx_1,Cx_2,Cx_3,...,Cx_m$\
+  each $x_i = {\operatorname{argmax}}\set{C_1,C_2,C_3,...,C_n}$\
+  where $n$ = number of classes and $m$ = number of sites\
+  The above sequence is used to train Baum-Welch algorithm.
+
+* Step 2: Initialize HMM with initial probabilities to start training.
+
+Hidden Markov Model consists of transition probability and emission probability.\
+We define states as classes and emissions as classes along with additional states.\
+* Initialize transition probability 
+  * Probability of beginning with any class is equally distributed
+  * Probability of a class tranisitioning to same class is 0.99 and the 0.01 is distributed equally to n-1 reaminimg classes.
+* Initialize Emission probability 
+  * Probability of a class emitted of itself if 0.5 and the other 0.5 is distibuted among other emissions
+  * Number of emissions are decided according to model selected
+    * Model 1 has no additional emissions. Emissions = classes
+    * Model 2 has one additional emissions for constant sites. Emissions = classes + 1
+    * Model 3 has two additional emissions for constant sites and non-informative sites. Emissions = classes + 2
+    * Model 4 has three additional emissions for constant sites, non-informative sites and same parsimony sites. Emissions = classes + 3
+         
+* Step 3: We train the parameters and get final transition/emission probs.
+![BW Flowchart](https://user-images.githubusercontent.com/11074196/173843794-029ac6ab-f8b6-45e6-8d67-d4c35a7f26a8.png)
+
+* Step 4: Use the final parameters to predict class boundaries using dynamic programming algorithms like Viterbi/posterior decoding.
