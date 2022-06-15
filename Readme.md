@@ -1,5 +1,13 @@
+## Table of contents
+* [Introduction](#what-is-mixturemodelhmm)
+* [Installation](#installation)
+* [Quick Start](#quickstart)
+* [Example](#worked-example)
+* [Approach](#description-of-the-approach)
+
 ## What is MixtureModelHMM
 
+MixtureModelHMM implements _Hidden Markov Model_ a probrabilistic model used to analyze sequencial data. It is used to post-process output of phylogenetic mizture models from [IQ-TREE](http://www.iqtree.org/). The package implements `Baum-Welch` Algorithm to train the HMM model on given input file. The input files can be either the site likelihood or site probability file and the alignment information file. Once the HMM is trained the model could be used to determine the final class associated with each sites using either `viterbi` or `posterier decoding` algorithm. The default algorithm for predicting class boundries is set to `veterbi`. The output of the function returns an object class consisting of vector for each classes assigned to a given class in a [vector form](#classification) along with a [prediction plot](#alignment_plot) and [hmm transition table](#hmm_transition_table).
 
 
 ## Installation
@@ -32,7 +40,7 @@ hmm_result <- run_HMM(site_info = "mydata.sitelh", aln_info = "mydata.alninfo")
 Then you can view the key plot like this:
 
 ```
-plot_predictions(hmm_result)
+hmm_result$plot_predictions(hmm_result)
 ```
 
 and write a report on the HMM with a lot more information like this:
@@ -240,5 +248,7 @@ The `hmm_result` object is an object of class 'MixtureModelHMM'. This object con
 
 
 ## Description of the approach
+
+![Flowchart](https://user-images.githubusercontent.com/11074196/173745320-c85c9a9a-30b0-4e10-bc7f-1231f939a49c.png)
 
 
