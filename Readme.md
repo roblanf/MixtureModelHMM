@@ -52,8 +52,7 @@ save_file((hmm_result = hmm_result, output_filename = "hmm_report.txt"))
 ## Google Colab notebook
 
 If you have your files, and just want the answer without using R, you can use the google colab notebook here:
-
-
+[MixtureModelHMM_notebook](https://colab.research.google.com/drive/1Kn7nigiNPh25tPqn4mC6e-aDYy4njN60?usp=sharing#scrollTo=4CLAR_gBqw8f)
 
 ## Worked example
 
@@ -120,7 +119,7 @@ hmm_result <- run_HMM(site_info = "example.phy.sitelh", aln_info = "example.phy.
 
 the `run_HMM` function takes two files as input:
 
-* `site_info`: here you can pass either the `.sitelh` or the `.siteprob` file from your IQ-TREE analysis. In amost all of our tests and simulations, we found that the HMM performs better using site likelihoods (`.sitelh` file) rather than site posterior probabilities (the `.siteprob` file), so we recommend using it here.
+* `site_info`: here you can pass either the `.sitelh` or the `.siteprob` file from your IQ-TREE analysis. In almost all of our tests and simulations, we found that the HMM performs better using site likelihoods (`.sitelh` file) rather than site posterior probabilities (the `.siteprob` file), so we recommend using it here.
 * `aln_info`: here you have to point to a `.alninfo` file from IQ-TREE.
 
 The HMM trys to figure out how to assign every site in the alignment to a class, using the fact that neighbouring tend to be in the same class to help it. One way to think about this is that the HMM is a way of cleaning up the noisy signal in the plot above. Along the way the HMM accounts for issues associated with phylogenetic data, such as the fact that constant sites don't contain much useful information.
@@ -250,26 +249,26 @@ The `hmm_result` object is an object of class 'MixtureModelHMM'. This object con
 ## Description of the approach
 
 #### Flowchart
-![Flowchart](https://user-images.githubusercontent.com/11074196/173745320-c85c9a9a-30b0-4e10-bc7f-1231f939a49c.png)
+![Flowchart](https://user-images.githubusercontent.com/11074196/173984167-38b6e15a-abe5-4959-b228-9100c04912c0.png)
 
 
 We can either use posterior probability for each site(.siteprob file) or log-likelihood for each site(.sitelh file) as an input for `run_HMM()`.
 
-* Step 1: We create a sequence of classes with maximum log-likelihood(or posterior proabilility) for each given site.\
+* Step 1: We create a sequence of classes with maximum log-likelihood(or posterior proabilility) for each given site.
           
   $Cx_1,Cx_2,Cx_3,...,Cx_m$\
-  each $x_i = {\operatorname{argmax}}\set{C_1,C_2,C_3,...,C_n}$\
-  where $n$ = number of classes and $m$ = number of sites\
+  each $x_i = {\operatorname{argmax}}\set{Var_1,Var_2,Var_3,...,Var_n}$\
+  where $Var_i$ = LnLW_i or p_i from `site_info` file $n$ = number of classes and $m$ = number of sites\
   The above sequence is used to train Baum-Welch algorithm.
 
 * Step 2: Initialize HMM with initial probabilities to start training.
 
 Hidden Markov Model consists of transition probability and emission probability.\
 We define states as classes and emissions as classes along with additional states.\
-* Initialize transition probability 
+* Initialize transition probabilities 
   * Probability of beginning with any class is equally distributed
   * Probability of a class tranisitioning to same class is 0.99 and the 0.01 is distributed equally to n-1 reaminimg classes.
-* Initialize Emission probability 
+* Initialize Emission probabilities
   * Probability of a class emitted of itself if 0.5 and the other 0.5 is distibuted among other emissions
   * Number of emissions are decided according to model selected
     * Model 1 has no additional emissions. Emissions = classes
