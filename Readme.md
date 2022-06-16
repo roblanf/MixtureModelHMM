@@ -7,7 +7,7 @@
 
 ## What is MixtureModelHMM
 
-MixtureModelHMM implements _Hidden Markov Model_ a probabilistic model used to analyze sequencial data. It is used to post-process output of phylogenetic mizture models from [IQ-TREE](http://www.iqtree.org/). The package implements `Baum-Welch` Algorithm to train the HMM model on given input file. The input files can be either the site likelihood or site probability file and the alignment information file. Once the HMM is trained the model could be used to determine the final class associated with each sites using either `viterbi` or `posterier decoding` algorithm. The default algorithm for predicting class boundries is set to `veterbi`. The output of the function returns an object class consisting of vector for each classes assigned to a given class in a [vector form](#classification) along with a [prediction plot](#alignment_plot) and [hmm transition table](#hmm_transition_table).
+MixtureModelHMM implements _Hidden Markov Model_ a probabilistic model used to analyze sequencial data. It is used to post-process output of phylogenetic mixture models from [IQ-TREE](http://www.iqtree.org/). The package implements `Baum-Welch` Algorithm to train the HMM model on given input file. The Baum-Welch algorithm is a dynamic programming approach and a special case of the expectation-maximization algorithm (EM algorithm). Its purpose is to tune the parameters of the HMM, namely the state transition matrix, the emission matrix, and the initial state distribution, such that the model is maximally like the observed data. The input files can be either the site likelihood or site probability file and the alignment information file. Once the HMM is trained the model could be used to determine the final class associated with each sites using either `viterbi` or `posterier decoding` algorithm. The default algorithm for predicting class boundries is set to `veterbi`. The output of the function returns an object class consisting of vector for each classes assigned to a given class in a [vector form](#classification) along with a [prediction plot](#alignment_plot) and [hmm transition table](#hmm_transition_table).
 
 
 ## Installation
@@ -208,20 +208,11 @@ The `MixtureModelHMM` package has a few functions to write out specific files th
 
 #### `save_report()`
 
-This will save a text file that contains a lot of useful information about your results:
+This will save a Rmd and pdf file that contains a lot of useful information about your results:
 
 ```r
-save_report(hmm_result = hmm_result, output_filename = "hmm_report.txt")
+save_report(hmm_result = hmm_result, output_filename = "hmm_report")
 ```
-
-#### `save_file()`
-
-Sometimes you might want to save all the classifications, and this might be large. The `save_file()` function allows you to save it directly to a gzipped file: 
-
-```r
-save_file(hmm_result = hmm_result, output_filename = "hmm_output")
-```
-
 
 #### `save_partitioning_scheme()`
 
@@ -258,13 +249,13 @@ We can either use posterior probability for each site(.siteprob file) or log-lik
           
   $Cx_1,Cx_2,Cx_3,...,Cx_m$\
   each $x_i = {\operatorname{argmax}}\set{Var_1,Var_2,Var_3,...,Var_n}$\
-  where $Var_i$ = LnLW_i or p_i from `site_info` file $n$ = number of classes and $m$ = number of sites\
+  where $Var_i$ = LnLW_i or p_i from `site_info` file, $n$ = number of classes and $m$ = number of sites\
   The above sequence is used to train Baum-Welch algorithm.
 
 * Step 2: Initialize HMM with initial probabilities to start training.
 
 Hidden Markov Model consists of transition probability and emission probability.\
-We define states as classes and emissions as classes along with additional states.\
+We define states as classes and emissions as classes along with additional states.
 * Initialize transition probabilities 
   * Probability of beginning with any class is equally distributed
   * Probability of a class tranisitioning to same class is 0.99 and the 0.01 is distributed equally to n-1 reaminimg classes.
