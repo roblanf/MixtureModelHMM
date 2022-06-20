@@ -40,13 +40,13 @@ hmm_result <- run_HMM(site_info = "mydata.sitelh", aln_info = "mydata.alninfo")
 Then you can view the key plot like this:
 
 ```
-hmm_result$plot_predictions(hmm_result)
+hmm_result$alignment_plot
 ```
 
 and write a report on the HMM with a lot more information like this:
 
 ```
-save_file((hmm_result = hmm_result, output_filename = "hmm_report.txt"))
+save_report(hmm_result = hmm_result, output_filename = "hmm_report.Rmd")
 ```
 
 ## Google Colab notebook
