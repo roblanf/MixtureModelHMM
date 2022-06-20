@@ -7,7 +7,7 @@
 
 ## What is MixtureModelHMM
 
-MixtureModelHMM implements _Hidden Markov Model_ a probabilistic model used to analyze sequencial data. It is used to post-process output of phylogenetic mixture models from [IQ-TREE](http://www.iqtree.org/). The package implements `Baum-Welch` Algorithm to train the HMM model on given input file. The Baum-Welch algorithm is a dynamic programming approach and a special case of the expectation-maximization algorithm (EM algorithm). Its purpose is to tune the parameters of the HMM, namely the state transition matrix, the emission matrix, and the initial state distribution, such that the model is maximally like the observed data. The input files can be either the site likelihood or site probability file and the alignment information file. Once the HMM is trained the model could be used to determine the final class associated with each sites using either `viterbi` or `posterier decoding` algorithm. The default algorithm for predicting class boundries is set to `veterbi`. The output of the function returns an object class consisting of vector for each classes assigned to a given class in a [vector form](#classification) along with a [prediction plot](#alignment_plot) and [hmm transition table](#hmm_transition_table).
+MixtureModelHMM implements _Hidden Markov Model_ a probabilistic model used to analyze sequencial data. It is used to post-process output of phylogenetic mixture models from [IQ-TREE](http://www.iqtree.org/). The package implements `Baum-Welch` Algorithm to train the HMM model on given input file. The Baum-Welch algorithm is a dynamic programming approach and a special case of the expectation-maximization algorithm (EM algorithm). Its purpose is to tune the parameters of the HMM, namely the state transition matrix, the emission matrix, and the initial state distribution, such that the model is maximally like the observed data. The input files can be either the site likelihood or site probability file and the alignment information file. Once the HMM is trained the model could be used to determine the final class associated with each sites using dynamic programming algorithm. The default algorithm for predicting class boundries is set to `veterbi`. The output of the function returns an object class consisting of vector for each classes assigned to a given class in a [vector form](#classification) along with a [prediction plot](#alignment_plot) and [hmm transition table](#hmm_transition_table).
 
 
 ## Installation
@@ -101,6 +101,9 @@ plot_scatter("example.phy.siteprob")
 
 > NB: you can also plot the site likelihoods in the same way, but you'll see if you try it that these are far less informative!
 
+The functions implements `geom_smooth()` with default `span=0.03`.\
+`span` can be  adjusted as suitable where smaller numbers produce wigglier lines, larger numbers produce smoother lines.
+
 The command above will give you the following plot:
 
 ![a scatter plot showing a clear pattern](https://github.com/roblanf/MixtureModelHMM/blob/master/img/scatter_plot.png)
@@ -121,6 +124,12 @@ the `run_HMM` function takes two files as input:
 
 * `site_info`: here you can pass either the `.sitelh` or the `.siteprob` file from your IQ-TREE analysis. In almost all of our tests and simulations, we found that the HMM performs better using site likelihoods (`.sitelh` file) rather than site posterior probabilities (the `.siteprob` file), so we recommend using it here.
 * `aln_info`: here you have to point to a `.alninfo` file from IQ-TREE.
+
+Other optional parameters:
+
+* `model`: Select a model from 1-4. Defaults to model 4.
+* `iter` : The maximum number of EM iterations to carry out before the cycling process is terminated and the partially trained model is returned.       Defaults to 100. The maximum change in log likelihood between EM iterations before the cycling procedure is terminated is set to 1E-07.
+* `algorithm`: Select dynamic algorithm to predict class boundaries from the trained HMM model parameters.
 
 The HMM trys to figure out how to assign every site in the alignment to a class, using the fact that neighbouring tend to be in the same class to help it. One way to think about this is that the HMM is a way of cleaning up the noisy signal in the plot above. Along the way the HMM accounts for issues associated with phylogenetic data, such as the fact that constant sites don't contain much useful information.
 
@@ -260,8 +269,9 @@ We define states as classes and emissions as classes along with additional state
   * Probability of beginning with any class is equally distributed
   * Probability of a class tranisitioning to same class is 0.99 and the 0.01 is distributed equally to n-1 reaminimg classes.
 * Initialize Emission probabilities
-  * Probability of a class emitted of itself if 0.5 and the other 0.5 is distibuted among other emissions
-  * Number of emissions are decided according to model selected
+  * Probability of a class emitted of itself is 0.5 and the other 0.5 is distibuted among other emissions.
+  * The probability of this addtional emissions is equal for all classes.
+  * Number of emissions are decided according to model selected:
     * Model 1 has no additional emissions. Emissions = classes
     * Model 2 has one additional emissions for constant sites. Emissions = classes + 1
     * Model 3 has two additional emissions for constant sites and non-informative sites. Emissions = classes + 2
@@ -270,4 +280,5 @@ We define states as classes and emissions as classes along with additional state
 * Step 3: We train the parameters and get final transition/emission probs.
 ![BW Flowchart](https://user-images.githubusercontent.com/11074196/173843794-029ac6ab-f8b6-45e6-8d67-d4c35a7f26a8.png)
 
-* Step 4: Use the final parameters to predict class boundaries using dynamic programming algorithms like Viterbi/posterior decoding.
+* Step 4: Use the final parameters to predict class boundaries using dynamic programming algorithms - Viterbi or posterior decoding(forward-backward).
+
