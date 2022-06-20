@@ -1,0 +1,34 @@
+---
+title: "HMM_Report"
+output: 
+  html_document:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Plotting the raw data
+```{r}
+hmm_result$initial_scatter_plot
+```
+
+### Summary
+```{r}
+summary(hmm_result)
+```
+
+## The key output from the HMM
+
+```{r}
+hmm_result$alignment_plot
+```
+
+```{r}
+hmm_result$hmm_transition_table
+```
+
+```{r}
+prop.table(table(hmm_result$classification))
+```

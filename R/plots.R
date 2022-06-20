@@ -6,7 +6,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom tidyr pivot_longer
-#' @importFrom ggplot2 ggplot aes  coord_flip geom_col geom_point geom_smooth guides guide_legend
+#' @importFrom ggplot2 ggplot aes  coord_flip geom_col geom_point geom_smooth guides guide_legend theme element_blank
 #' @importFrom reshape2 melt
 #' @export
 #'
@@ -27,8 +27,8 @@ plot_predictions<-function(hmm_result){
   print("# Making alignment_plot")
   df2 %>%
     ggplot(aes(x = names, y = Site, group = names, fill = as.factor(value))) +
-    geom_col() + coord_flip() + guides(fill=guide_legend(title='Class'))
-
+    geom_col() + coord_flip() + guides(fill=guide_legend(title='Class')) +
+    theme(axis.title.x=element_blank())
 }
 
 #' Inital Plots

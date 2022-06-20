@@ -1,0 +1,4 @@
+name: HMM_Report
+description: >
+   Generates a report for class association for each site
+create_dir: FALSE

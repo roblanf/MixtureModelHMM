@@ -44,8 +44,8 @@ transition_table<-function(hmm_result){
 #'
 #' @examples
 #' hmm_result = run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo",model = 3)
-#' partition_file(hmm_result,"hmm_partitions")
-save_partition_file<-function(hmm_result,output_filename){
+#' save_partitioning_scheme(hmm_result,"hmm_partitions")
+save_partitioning_scheme<-function(hmm_result,output_filename){
 
   # Get the classification from hmm_result object
   classification<-hmm_result$classification

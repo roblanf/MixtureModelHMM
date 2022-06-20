@@ -7,17 +7,17 @@
 save_report(hmm_result, output_filename)
 }
 \arguments{
-\item{hmm_result}{predict_tree/predict_tree_mixed returned list}
+\item{hmm_result}{run_hmm() returned object}
 
 \item{output_filename}{name of file to be saved}
 }
 \value{
-saves prediction report in .txt format
+saves prediction report in HTML file
 }
 \description{
 Generates report
 }
 \examples{
 hmm_result = run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo",model = 3)
-save_report(hmm_result,"report")
+save_report(hmm_result,"hmm_report.Rmd")
 }

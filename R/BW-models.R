@@ -13,7 +13,7 @@
 #'
 #' @examples
 #' hmm_result = run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo",model = 3)
-#' classification <- pred[[1]]
+#' hmm_result$alignment_plot hmm_result$hmm_transition_table hmm_result$classification
 
 
 run_HMM <- function(site_info,aln_info,model=4,iter=10000,algorithm="viterbi"){
@@ -54,27 +54,27 @@ run_HMM <- function(site_info,aln_info,model=4,iter=10000,algorithm="viterbi"){
   A[,1]<-0
   dimnames(A) <- list(from = states, to = states)
 
-  ### Define the emission probability matrix
+  ### Define the emission probability matrix for each model
   if (model==1){
     print("Model 1 - same number of class and emissions")
     residues <- paste("E",1:(numClasses),sep='')
     E=matrix(c(rep(.5/(numClasses-1),numClasses)),nrow=numClasses,ncol=numClasses,byrow = TRUE)
   } else if(model==2){
     print("Model 2 - 1 additional emission for constant site")
-    print("The probability of this addtional emission is equal for all classes")
+    print("The probability of this addtional emissions is equal for all classes")
     residues <- paste("E",1:(numClasses+1),sep='')
     seq[tab$Stat=='C']=paste("E",numClasses+1,sep='')
     E=matrix(c(rep(.5/(numClasses),numClasses)),nrow=numClasses,ncol=numClasses+1,byrow = TRUE)
   } else if(model==3){
     print("Model 3 - 2 additional emission for constant site and non-informative sites")
-    print("The probability of these addtional emission is equal for all classes")
+    print("The probability of these addtional emissions is equal for all classes")
     residues <- paste("E",1:(numClasses+2),sep='')
     seq[tab$Stat=='U']=paste("E",numClasses+2,sep='')
     seq[tab$Stat=='C']=paste("E",numClasses+1,sep='')
     E=matrix(c(rep(.5/(numClasses+1),numClasses)),nrow=numClasses,ncol=numClasses+2,byrow = TRUE)
   } else if(model==4){
     print("Model 4 - 3 additional emission for constant site, non-informative sites and same parsimony")
-    print("The probability of these addtional emission is equal for all classes")
+    print("The probability of these addtional emissions is equal for all classes")
     residues <- paste("E",1:(numClasses+3),sep='')
     seq[tab$Stat=='S']=paste("E",numClasses+3,sep='')
     seq[tab$Stat=='U']=paste("E",numClasses+2,sep='')
@@ -119,6 +119,6 @@ run_HMM <- function(site_info,aln_info,model=4,iter=10000,algorithm="viterbi"){
   res$alignment_plot=plot_predictions(res)
   res$hmm_probabilities=list(class_transition_probabilities=bw$A,class_emission_probabilities=bw$E)
   res$hmm_transition_table=transition_table(res)
-  res$initial_scatter_plot=plot_scatter(site_info)
+  res$initial_scatter_plot=plot_scatter(gsub(".sitelh",".siteprob",site_info))
   return(res)
 }

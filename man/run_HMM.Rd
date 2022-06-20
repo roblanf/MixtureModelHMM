@@ -25,5 +25,5 @@ Run_HMM to Post-processes the output of phylogenetic mixture models using HMMs
 }
 \examples{
 hmm_result = run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo",model = 3)
-classification <- pred[[1]]
+hmm_result$alignment_plot hmm_result$hmm_transition_table hmm_result$classification
 }
