@@ -18,7 +18,7 @@ run_HMM(site_info, aln_info, model = 4, iter = 10000, algorithm = "viterbi")
 \item{algorithm}{viterbi/posterior algoithm to be used to estimate final sequence of classes}
 }
 \value{
-viterbi path or posterior classification as an object
+an object of class MixtureModelHMM
 }
 \description{
 Run_HMM to Post-processes the output of phylogenetic mixture models using HMMs

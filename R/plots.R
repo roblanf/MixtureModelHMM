@@ -46,6 +46,10 @@ plot_predictions<-function(hmm_result){
 
 plot_scatter<-function(input_filepath, span=0.03){
 
+  if(file.info(input_filepath)$size > 10000){
+    warning("WARNING: Your input file is large, and making the scatterplot might take a long time.")
+  }
+
   data=read.table(input_filepath,header=FALSE,fill=TRUE)
 
   if(data[1,2]=="LnL"){
@@ -53,11 +57,13 @@ plot_scatter<-function(input_filepath, span=0.03){
     colnames(data)<-c("Site","LnL",paste("LnLW_",1:numClasses,sep=''))
     data=data[-1,]
     rownames(data)<-NULL
-  } else if(data[1,2]=="p1"){
+  }
+  else if(data[1,2]=="p1"){
     numClasses=(ncol(data)-1)
     colnames(data) <- data[1,]
     data=data[-1,]
-  } else{
+  }
+  else{
     print("Invalid site info file")
   }
 
@@ -68,6 +74,7 @@ plot_scatter<-function(input_filepath, span=0.03){
   dl = data %>%
          pivot_longer(cols=all_of(vars),names_to = "type", values_to = "measure")
 
+  print("# Making scatter plot")
   ggplot(dl, aes(x=Site, y = measure, colour=type)) +
     geom_point(size=0.5,alpha=0.1) +
     geom_smooth(method='loess', span=span)

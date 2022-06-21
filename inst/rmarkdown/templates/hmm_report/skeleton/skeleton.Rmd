@@ -9,25 +9,32 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-### Plotting the raw data
+The `run_hmm()` object is passed over to the template to create plots and tables
+
+## Plotting the raw data
 ```{r}
 hmm_result$initial_scatter_plot
 ```
 
-### Summary
+## Summary
 ```{r}
 summary(hmm_result)
 ```
 
 ## The key output from the HMM
 
+### Alignment Plot
+
 ```{r}
 hmm_result$alignment_plot
 ```
+### Transition table
 
 ```{r}
 hmm_result$hmm_transition_table
 ```
+
+### Proportion table for class prediction
 
 ```{r}
 prop.table(table(hmm_result$classification))
