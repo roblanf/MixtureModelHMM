@@ -15,7 +15,7 @@ save_report(hmm_result, output_filename)
 saves prediction report in HTML file
 }
 \description{
-Generates report
+Rmd file is generated which is rendered into HTML file
 }
 \examples{
 hmm_result = run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo",model = 3)

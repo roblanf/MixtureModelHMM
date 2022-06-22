@@ -10,10 +10,12 @@ plot_predictions(hmm_result)
 \item{hmm_result}{run_hmm() returned object}
 }
 \value{
-hmm_input, viterbi or posterior decoding predicted path plot
+hmm_input and selected dynamic programming algorithm(default is viterbi) predicted path plot
 }
 \description{
-Prediction Plots
+This plot shows the alignment sites along the x-axis.
+On the top panel it shows the maximum likelihood (or posterior probability, if that's the file you used as input) class for each site in your alignment.
+This is the input data for the HMM. On the bottom panel it shows the output of the HMM - i.e. which classes the HMM has assigned each site to.
 }
 \examples{
 hmm_result = run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo",model = 3)

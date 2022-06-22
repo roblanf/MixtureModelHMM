@@ -1,10 +1,27 @@
 #' Run_HMM to Post-processes the output of phylogenetic mixture models using HMMs
 #'
-#' @param site_info relative path of the input .sitelh/.siteprob file
-#' @param aln_info relative path of the alignment file
+#' The function implements the Baum-Welch algorithm for training the HMM and
+#' uses dynamic programming to to assign every site in the alignment to a class.
+#'
+#' @param site_info relative path of the input .sitelh or .siteprob file from your IQ-TREE analysis.
+#' In almost all of our tests and simulations, we found that the HMM performs better using site likelihoods(.sitelh file) rather than site posterior probabilities (the .siteprob file), so we recommend using it here.
+#' @param aln_info relative path of the alignment file from IQ-TREE analysis.
 #' @param model Choose model 1,2,3 or 4. Default=4
-#' @param iter maximum iterations. Default=10000
-#' @param algorithm viterbi/posterior algoithm to be used to estimate final sequence of classes
+#' @param iter The maximum number of EM iterations to carry out before the cycling process is terminated and the partially trained model is returned. Defaults to 100.
+#' The maximum change in log likelihood between EM iterations before the cycling procedure is terminated is set to 1E-07.
+#' @param algorithm Select dynamic algorithm to predict class boundaries from the trained HMM model parameters.
+#'
+#' @details Model details
+#'
+#' Model 1 has no additional emissions. Emissions = classes.
+#'
+#' Model 2 has one additional emissions for constant sites. Emissions = classes + 1.
+#'
+#' Model 3 has two additional emissions for constant sites and non-informative sites. Emissions = classes + 2.
+#'
+#' Model 4 has three additional emissions for constant sites, non-informative sites and same parsimony sites. Emissions = classes + 3.
+#'
+#' Detail information about approach https://github.com/roblanf/MixtureModelHMM
 #'
 #' @return an object of class MixtureModelHMM
 #' @importFrom aphid train Viterbi posterior
@@ -12,9 +29,7 @@
 #' @export
 #'
 #' @examples
-#' hmm_result = run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo",model = 3)
-#' hmm_result$alignment_plot hmm_result$hmm_transition_table hmm_result$classification
-
+#' hmm_result = run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo")
 
 run_HMM <- function(site_info,aln_info,model=4,iter=10000,algorithm="viterbi"){
 

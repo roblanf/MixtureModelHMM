@@ -9,7 +9,8 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-The `run_hmm()` object is passed over to the template to create plots and tables
+The `run_hmm()` object is passed over to the template to create plots and tables using save_report().
+If you want to run thr R code chunks below you would have to rename `hmm_result` with your `run_hmm()` output object.
 
 ## Plotting the raw data
 ```{r}

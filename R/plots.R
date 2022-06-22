@@ -1,12 +1,16 @@
 #' Prediction Plots
 #'
+#' This plot shows the alignment sites along the x-axis.
+#' On the top panel it shows the maximum likelihood (or posterior probability, if that's the file you used as input) class for each site in your alignment.
+#' This is the input data for the HMM. On the bottom panel it shows the output of the HMM - i.e. which classes the HMM has assigned each site to.
+#'
 #' @param hmm_result run_hmm() returned object
 #'
-#' @return hmm_input, viterbi or posterior decoding predicted path plot
+#' @return hmm_input and selected dynamic programming algorithm(default is viterbi) predicted path plot
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @importFrom tidyr pivot_longer
-#' @importFrom ggplot2 ggplot aes  coord_flip geom_col geom_point geom_smooth guides guide_legend theme element_blank
+#' @importFrom ggplot2 ggplot aes coord_flip geom_col geom_point geom_smooth guides guide_legend theme element_blank
 #' @importFrom reshape2 melt
 #' @export
 #'
@@ -24,14 +28,17 @@ plot_predictions<-function(hmm_result){
     melt(id.vars = "names") %>%
     mutate(Site = 1)
 
-  print("# Making alignment_plot")
+  print("# Making alignment plot")
   df2 %>%
     ggplot(aes(x = names, y = Site, group = names, fill = as.factor(value))) +
     geom_col() + coord_flip() + guides(fill=guide_legend(title='Class')) +
-    theme(axis.title.x=element_blank())
+    theme(axis.title.y=element_blank())
 }
 
-#' Inital Plots
+#' Initial Scatter Plots
+#'
+#' Before running the HMM, it's a really good idea to just look at the raw data from IQ-TREE,
+#' to see for yourself if neighboring sites really do have similar class assignments
 #'
 #' @param input_filepath file path to a .sitelh or a .siteprob file from IQ-TREE
 #' @param span the span of the kernel density plot (default 0.03)
@@ -46,8 +53,8 @@ plot_predictions<-function(hmm_result){
 
 plot_scatter<-function(input_filepath, span=0.03){
 
-  if(file.info(input_filepath)$size > 10000){
-    warning("WARNING: Your input file is large, and making the scatterplot might take a long time.")
+  if(file.info(input_filepath)$size > 100000){
+    warning("WARNING: Your input file is large, and making the scatterplot might take a long time.",call. = FALSE)
   }
 
   data=read.table(input_filepath,header=FALSE,fill=TRUE)
@@ -82,6 +89,12 @@ plot_scatter<-function(input_filepath, span=0.03){
 
 #' Transition Plots
 #'
+#' provides a visual representation of trained hidden Markov model
+#'
+#' @details Plots a HMM as a directed graph.
+#'   States (rectangles) are interconnected by directed
+#'   lines with line-weights proportional to the transition probabilities between
+#'   the states.
 #' @param hmm_result run_hmm() returned object
 #'
 #' @return Transition diagram from final probabilities

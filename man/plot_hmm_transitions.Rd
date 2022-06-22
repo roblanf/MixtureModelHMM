@@ -13,7 +13,13 @@ plot_hmm_transitions(hmm_result)
 Transition diagram from final probabilities
 }
 \description{
-Transition Plots
+provides a visual representation of trained hidden Markov model
+}
+\details{
+Plots a HMM as a directed graph.
+  States (rectangles) are interconnected by directed
+  lines with line-weights proportional to the transition probabilities between
+  the states.
 }
 \examples{
 hmm_result = run_HMM(site_info = "mydata.sitelh",aln_info = "mydata.alninfo",model = 3)

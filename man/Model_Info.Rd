@@ -15,6 +15,5 @@ Model 1 - The tree with highest probability at a given site is considered, and c
 Model 2 - The tree with highest probability at a given site and constant sites are considered, and converted into a sequence for training of B-W algorithm.\cr
 Model 3 - The tree with highest probability at a given site constant sites and non-informative sites are considered, and converted into a sequence for training of B-W algorithm.\cr
 Model 4 - The tree with highest probability at a given site constant sites, non-informative sites and same parsimony sites are considered, and converted into a sequence for training of B-W algorithm.\cr
-Mix Model - Starts from model 1 and moves to next model if the current B-W model doesn't converge in 1000(or user-specified) iterations.
 }
 

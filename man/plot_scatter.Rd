@@ -2,7 +2,7 @@
 % Please edit documentation in R/plots.R
 \name{plot_scatter}
 \alias{plot_scatter}
-\title{Inital Plots}
+\title{Initial Scatter Plots}
 \usage{
 plot_scatter(input_filepath, span = 0.03)
 }
@@ -15,7 +15,8 @@ plot_scatter(input_filepath, span = 0.03)
 ggplot object with a scatter plot and smoothed kernel density
 }
 \description{
-Inital Plots
+Before running the HMM, it's a really good idea to just look at the raw data from IQ-TREE,
+to see for yourself if neighboring sites really do have similar class assignments
 }
 \examples{
 plot_scatter(input_filepath = "sample_data.sitelh")
