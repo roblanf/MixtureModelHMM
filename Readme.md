@@ -11,6 +11,8 @@ MixtureModelHMM implements _Hidden Markov Model_ a probabilistic model used to a
 
 
 ## Installation
+
+### In R or R Studio
 First install the `devtools` package if you don't already have it:
 
 ```
@@ -23,6 +25,46 @@ Then you can install MixtureModelHMM from this repository like this:
 library(devtools)
 install_github("roblanf/MixtureModelHMM")
 ```
+
+### Using Conda
+If you want to put this package into a Conda environment, here's a way that works for me. Please drop an issue if you know of a simpler way!
+
+First we make a conda environment and fire it up like this
+```
+conda create --name hmm
+conda activate hmm
+```
+
+Now we install the `devtools` R package like this
+
+```
+conda install -c conda-forge r-devtools
+```
+
+And when that's done, I'm going to make a 2-line bash script with the commands above. I use nano because it's on a lot of linux environments, but obviously you can use any editor to do this. All you need is a way to end up with a script called `installhmm.R` which has the two final lines from the R installation above.
+
+First start nano editing the file we want:
+
+```
+nano installhmm.R
+```
+
+Now you're in nano, copy paste these two lines into your editor:
+
+```
+conda create --name hmm
+conda activate hmm
+```
+
+Now type CTRL-x (i.e. hold down CTRL and press the 'x' key), and nano will ask if you want to save the file. Type 'y'.
+
+Now if you `ls -lh` you should see a file called `installhmm.R`, and if you type `more installhmm.R` you should see the two lines above. If that all looks OK, you can then run that R script like this:
+
+```
+Rscript installhmm.R
+```
+
+This will fire up R and run those two lines. If that all completes successfully, you have the pacakge installed.
 
 ## QuickStart
 If you already have an IQ-TREE analysis where you've produced the following files:
