@@ -18,7 +18,7 @@ save_report<-function(hmm_result, output_filename){
   if(unlist(strsplit(output_filename,"[.]"))[2] == "Rmd"){
 
     # create a Rmd file from template inside the package
-    draft(output_filename,template = "HMM_report", package="MixtureModelHMM")
+    draft(output_filename,template = "hmm_report", package="MixtureModelHMM")
 
     # convert to HTML file
     render(output_filename,params = list(hmm_result=hmm_result))
